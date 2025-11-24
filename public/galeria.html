@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Cartas para Jimena 💕</title>
+
+<style>
+:root {
+  --light-intensity: 0.1;
+}
+
+/* ===== FONDO MODERNO CON MOVIMIENTO ===== */
+body {
+  margin: 0;
+  font-family: "Georgia", serif;
+  background: radial-gradient(circle at 20% 30%, #ffe0ef, #ffc8da, #ffb4d1, #f7a3c9);
+  background-size: 170% 170%;
+  animation: bgflow 18s ease-in-out infinite;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@keyframes bgflow {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* ===== CORAZONES FLOTANDO ===== */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  color: #ff6da8;
+  font-size: 22px;
+  animation: floatHearts 6s linear infinite;
+  opacity: 0.55;
+  z-index: 0;
+}
+
+@keyframes floatHearts {
+  0% { transform: translateY(0) rotate(0deg); opacity: .3; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== HEADER ROMÁNTICO ===== */
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  padding: 40px 30px;
+  border-radius: 30px;
+  box-shadow: 0 25px 70px rgba(255,0,140,0.15);
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #ff5fa5;
+  text-shadow: 0 0 20px rgba(255, 109, 168, 0.45);
+  animation: softGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes softGlow {
+  0% { text-shadow: 0 0 15px rgba(255, 109, 168, 0.35); }
+  100% { text-shadow: 0 0 35px rgba(255, 109, 168, 0.9); }
+}
+
+.header p {
+  font-size: 1.3rem;
+  color: #ff5fa5;
+  opacity: 0.8;
+  margin-bottom: 25px;
+}
+
+.header .count {
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+/* ===== GRID DE CARTAS ===== */
+.letters-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.letter-card {
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(255,0,140,0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.letter-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(255,154,208,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+.letter-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 30px 70px rgba(255,0,140,0.25);
+}
+
+.letter-card:hover::before {
+  opacity: 1;
+}
+
+.letter-content {
+  position: relative;
+  z-index: 2;
+}
+
+.letter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 95, 165, 0.2);
+}
+
+.letter-title {
+  font-size: 1.5rem;
+  color: #ff5fa5;
+  margin: 0;
+  font-weight: 700;
+}
+
+.letter-date {
+  font-size: 0.9rem;
+  color: #ff8fbf;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 5px 12px;
+  border-radius: 15px;
+}
+
+.letter-preview {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 20px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  text-align: justify;
+}
+
+.letter-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.read-btn {
+  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.read-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 154, 208, 0.4);
+}
+
+.letter-status {
+  font-size: 0.9rem;
+  color: #ff5fa5;
+  font-weight: 600;
+}
+
+/* ===== ESTADO VACÍO ===== */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 30px;
+  box-shadow: 0 25px 70px rgba(255,0,140,0.15);
+}
+
+.empty-state h2 {
+  font-size: 2.2rem;
+  color: #ff5fa5;
+  margin-bottom: 20px;
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+  color: #ff8fbf;
+  margin-bottom: 30px;
+}
+
+.empty-heart {
+  font-size: 4rem;
+  margin-bottom: 30px;
+  animation: heartBeat 2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* ===== FILTROS ===== */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 154, 208, 0.3);
+  padding: 10px 20px;
+  border-radius: 25px;
+  color: #ff5fa5;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  color: white;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+/* ===== LOADING ===== */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #ff5fa5;
+}
+
+.loading-heart {
+  font-size: 3rem;
+  animation: loadingPulse 1.2s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes loadingPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ===== BOTÓN FLOTANTE PARA CREAR ===== */
+.create-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 154, 208, 0.4);
+  transition: all 0.3s ease;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(255, 154, 208, 0.6);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .header p {
+    font-size: 1.1rem;
+  }
+  
+  .letters-gallery {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .letter-card {
+    padding: 20px;
+  }
+  
+  .filters {
+    gap: 10px;
+  }
+  
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- CORAZONES DE FONDO -->
+<script>
+const hearts=["❤️","💕","💗","💞","💖"];
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*90+"vw";
+  h.style.fontSize=(Math.random()*12+18)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+},1200);
+</script>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>💕 Mis Cartas para Jimena</h1>
+    <p>Cada carta es un pedacito de mi corazón para vos</p>
+    <div class="count" id="letterCount">
+      <span id="countNumber">0</span> cartas de amor escritas
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="filterLetters('all')">📝 Todas las Cartas</button>
+    <button class="filter-btn" onclick="filterLetters('recent')">✨ Recientes</button>
+    <button class="filter-btn" onclick="filterLetters('favorites')">💖 Favoritas</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="loading-heart">💕</div>
+    <p>Cargando tus cartas de amor...</p>
+  </div>
+
+  <!-- GALERÍA DE CARTAS -->
+  <div class="letters-gallery" id="lettersGallery" style="display: none;">
+    <!-- Las cartas se cargarán aquí dinámicamente -->
+  </div>
+
+  <!-- ESTADO VACÍO -->
+  <div class="empty-state" id="emptyState" style="display: none;">
+    <div class="empty-heart">💔</div>
+    <h2>Aún no hay cartas</h2>
+    <p>Pronto habrá hermosas cartas de amor aquí para vos, Jime 💕</p>
+  </div>
+</div>
+
+<!-- BOTÓN FLOTANTE PARA IR AL ADMIN -->
+<button class="create-btn" onclick="goToAdmin()" title="Ir al panel de administración">
+  ⚙️
+</button>
+
+<script>
+let allLetters = [];
+let currentFilter = 'all';
+
+// Cargar cartas desde el JSON
+async function loadLetters() {
+  try {
+    const response = await fetch('/Carta/data/cartas.json');
+    const data = await response.json();
+    
+    // Filtrar solo cartas activas y ordenar por fecha (más recientes primero)
+    allLetters = data.cartas
+      .filter(carta => carta.activa)
+      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    
+    updateLetterCount();
+    renderLetters();
+    
+  } catch (error) {
+    console.error('Error cargando cartas:', error);
+    showEmptyState();
+  }
+  
+  // Ocultar loading
+  document.getElementById('loading').style.display = 'none';
+}
+
+// Actualizar contador de cartas
+function updateLetterCount() {
+  document.getElementById('countNumber').textContent = allLetters.length;
+}
+
+// Renderizar cartas
+function renderLetters() {
+  const gallery = document.getElementById('lettersGallery');
+  const emptyState = document.getElementById('emptyState');
+  
+  if (allLetters.length === 0) {
+    showEmptyState();
+    return;
+  }
+  
+  let filteredLetters = filterLettersByType(allLetters);
+  
+  if (filteredLetters.length === 0) {
+    gallery.innerHTML = `
+      <div class="empty-state" style="grid-column: 1/-1;">
+        <div class="empty-heart">🔍</div>
+        <h2>No hay cartas en esta categoría</h2>
+        <p>Probá con otro filtro, amor</p>
+      </div>
+    `;
+  } else {
+    gallery.innerHTML = filteredLetters.map(carta => `
+      <div class="letter-card" onclick="openLetter('${carta.id}')">
+        <div class="letter-content">
+          <div class="letter-header">
+            <h3 class="letter-title">${carta.titulo}</h3>
+            <span class="letter-date">${formatDate(carta.fecha)}</span>
+          </div>
+          <div class="letter-preview">
+            ${stripHtml(carta.cuerpo)}
+          </div>
+          <div class="letter-footer">
+            <button class="read-btn">
+              💌 Leer carta completa
+            </button>
+            <span class="letter-status">Para mi Jime 💕</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  gallery.style.display = 'grid';
+  emptyState.style.display = 'none';
+}
+
+// Mostrar estado vacío
+function showEmptyState() {
+  document.getElementById('lettersGallery').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'block';
+}
+
+// Filtrar cartas por tipo
+function filterLettersByType(letters) {
+  switch(currentFilter) {
+    case 'recent':
+      // Cartas de los últimos 30 días
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      return letters.filter(carta => new Date(carta.fecha) >= thirtyDaysAgo);
+      
+    case 'favorites':
+      // Por ahora, las cartas con foto se consideran "favoritas"
+      // En el futuro se puede agregar un campo específico
+      return letters.filter(carta => carta.foto);
+      
+    case 'all':
+    default:
+      return letters;
+  }
+}
+
+// Aplicar filtro
+function filterLetters(type) {
+  currentFilter = type;
+  
+  // Actualizar botones de filtro
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  // Re-renderizar cartas
+  renderLetters();
+}
+
+// Formatear fecha
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return date.toLocaleDateString('es-ES', options);
+}
+
+// Quitar HTML tags del preview
+function stripHtml(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
+
+// Abrir carta individual
+function openLetter(letterId) {
+  window.open(`/Carta/public/index.html?carta=${letterId}`, '_blank');
+}
+
+// Ir al panel de administración
+function goToAdmin() {
+  const password = prompt('💕 Ingresá la contraseña de admin para crear nuevas cartas:');
+  if (password) {
+    // Guardar contraseña temporalmente para auto-login
+    sessionStorage.setItem('adminPassword', password);
+    window.open('/Carta/admin/index.html', '_blank');
+  }
+}
+
+// Inicializar al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  loadLetters();
+});
+
+// Recargar cada 5 minutos para detectar cartas nuevas
+setInterval(loadLetters, 5 * 60 * 1000);
+</script>
+
+</body>
+</html>

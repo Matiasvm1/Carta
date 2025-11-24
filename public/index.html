@@ -269,6 +269,33 @@ body {
 .close-btn span {
   animation: heartPulse 1.6s ease-in-out infinite;
 }
+
+/* Botón galería */
+.gallery-btn {
+  position: absolute;
+  top: 16px;
+  right: 68px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 102, 160, 0.1);
+  box-shadow: 0 0 0 1px rgba(255,102,160,0.55);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ff3e93;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gallery-btn:hover {
+  background: rgba(255,102,160,0.2);
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 10px 24px rgba(255,102,160,0.45);
+}
+
 @keyframes heartPulse {
   0%,100% {transform: scale(1);}
   50% {transform: scale(1.18);}
@@ -521,6 +548,10 @@ p {
 
       <button class="close-btn" id="closeBtn" aria-label="Cerrar y volver al sobre">
         <span>❤️</span>
+      </button>
+      
+      <button class="gallery-btn" id="galleryBtn" aria-label="Ver todas las cartas">
+        <span>📚</span>
       </button>
 
       <h1 id="letterTitle">Cargando...</h1>

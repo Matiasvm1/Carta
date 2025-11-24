@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartas para Jimena 💕</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Georgia", serif;
+  background: radial-gradient(circle at 20% 30%, #ffe0ef, #ffc8da, #ffb4d1, #f7a3c9);
+  background-size: 170% 170%;
+  animation: bgflow 18s ease-in-out infinite;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@keyframes bgflow {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* Corazones flotantes */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  color: #ff6da8;
+  font-size: 22px;
+  animation: floatHearts 6s linear infinite;
+  opacity: 0.55;
+  z-index: 0;
+}
+
+@keyframes floatHearts {
+  0% { transform: translateY(0) rotate(0deg); opacity: .3; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+.container {
+  text-align: center;
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  padding: 60px 40px;
+  border-radius: 30px;
+  box-shadow: 0 25px 70px rgba(255,0,140,0.15);
+  max-width: 500px;
+  position: relative;
+  z-index: 2;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ff5fa5;
+  text-shadow: 0 0 20px rgba(255, 109, 168, 0.45);
+  animation: softGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes softGlow {
+  0% { text-shadow: 0 0 15px rgba(255, 109, 168, 0.35); }
+  100% { text-shadow: 0 0 35px rgba(255, 109, 168, 0.9); }
+}
+
+p {
+  font-size: 1.3rem;
+  color: #ff5fa5;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.btn {
+  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  border: none;
+  padding: 15px 35px;
+  border-radius: 25px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 250px;
+  justify-content: center;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255, 154, 208, 0.4);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #ffc8da, #ffb4d1);
+}
+
+.btn-admin {
+  background: linear-gradient(135deg, #ff8fbf, #ff76ae);
+  font-size: 1rem;
+  min-width: 200px;
+}
+
+.heart-decoration {
+  font-size: 4rem;
+  margin-bottom: 30px;
+  animation: heartBeat 2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 20px;
+    padding: 40px 25px;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  p {
+    font-size: 1.1rem;
+  }
+  
+  .btn {
+    font-size: 1rem;
+    min-width: 220px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Corazones flotantes -->
+<script>
+const hearts=["❤️","💕","💗","💞","💖"];
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*90+"vw";
+  h.style.fontSize=(Math.random()*12+18)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+},1200);
+</script>
+
+<div class="container">
+  <div class="heart-decoration">💕</div>
+  <h1>Para Jimena</h1>
+  <p>Un lugar especial lleno de cartas de amor</p>
+  
+  <div class="buttons">
+    <a href="/Carta/public/galeria.html" class="btn">
+      📚 Ver todas mis cartas
+    </a>
+    
+    <a href="/Carta/public/index.html" class="btn btn-secondary">
+      💌 Leer carta actual
+    </a>
+    
+    <a href="/Carta/admin/index.html" class="btn btn-admin">
+      ⚙️ Panel de administración
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

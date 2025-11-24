@@ -313,7 +313,7 @@
     <div class="container">
         <div class="header">
             <h1>💕 Panel de Administración</h1>
-            <p>Gestiona tus cartas románticas de manera fácil y elegante</p>
+            <p>Creá cartas hermosas para Jimena de manera fácil y elegante</p>
         </div>
 
         <!-- Login Form -->
@@ -332,16 +332,19 @@
         <!-- Admin Panel -->
         <div class="admin-panel" id="adminPanel">
             <div class="tabs">
-                <button class="tab active" onclick="showTab('letters')">Mis Cartas</button>
-                <button class="tab" onclick="showTab('create')">Nueva Carta</button>
-                <button class="tab" onclick="showTab('config')">Configuración</button>
+                <button class="tab active" onclick="showTab('letters')">💌 Cartas para Jime</button>
+                <button class="tab" onclick="showTab('create')">💕 Nueva Carta</button>
+                <button class="tab" onclick="showTab('config')">⚙️ Configuración</button>
             </div>
 
             <!-- Tab: Lista de Cartas -->
             <div class="tab-content active" id="lettersTab">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="color: #ff5fa5;">Cartas Existentes</h2>
-                    <button class="btn" onclick="showCreateModal()">+ Nueva Carta</button>
+                    <h2 style="color: #ff5fa5;">💌 Cartas para Jimena</h2>
+                    <div>
+                        <button class="btn" onclick="openGallery()">👀 Ver Galería</button>
+                        <button class="btn" onclick="showTab('create')">+ Nueva Carta</button>
+                    </div>
                 </div>
                 <div class="letters-grid" id="lettersGrid">
                     <!-- Las cartas se cargarán aquí dinámicamente -->
@@ -350,7 +353,7 @@
 
             <!-- Tab: Crear Nueva Carta -->
             <div class="tab-content" id="createTab">
-                <h2 style="color: #ff5fa5; margin-bottom: 20px;">Crear Nueva Carta</h2>
+                <h2 style="color: #ff5fa5; margin-bottom: 20px;">💕 Crear Nueva Carta para Jimena</h2>
                 <form id="letterForm">
                     <div class="form-group">
                         <label for="letterId">ID de la Carta</label>
@@ -365,7 +368,7 @@
                     
                     <div class="form-group">
                         <label for="letterRecipient">Destinatario</label>
-                        <input type="text" id="letterRecipient" placeholder="ej: María" required>
+                        <input type="text" id="letterRecipient" placeholder="Jimena" value="Jimena" required readonly style="background: #f8f9fa;">
                     </div>
                     
                     <div class="form-group">
@@ -501,18 +504,16 @@
         function loadLetters() {
             const grid = document.getElementById('lettersGrid');
             
-            if (!currentData.cartas || currentData.cartas.length === 0) {
+                if (!currentData.cartas || currentData.cartas.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
                         <h3>No hay cartas todavía 💔</h3>
-                        <p>¡Crea tu primera carta romántica!</p>
-                        <button class="btn" onclick="showTab('create')">+ Crear Primera Carta</button>
+                        <p>¡Escribí la primera carta romántica para Jimena!</p>
+                        <button class="btn" onclick="showTab('create')">+ Crear Primera Carta para Jime</button>
                     </div>
                 `;
                 return;
-            }
-            
-            grid.innerHTML = currentData.cartas.map((carta, index) => `
+            }            grid.innerHTML = currentData.cartas.map((carta, index) => `
                 <div class="letter-card">
                     <h3>${carta.titulo}</h3>
                     <div class="meta">
@@ -727,8 +728,26 @@
             }, 5000);
         }
 
+        // Abrir galería
+        function openGallery() {
+            window.open('/Carta/public/galeria.html', '_blank');
+        }
+
+        // Auto-login desde galería
+        function checkAutoLogin() {
+            const savedPassword = sessionStorage.getItem('adminPassword');
+            if (savedPassword) {
+                document.getElementById('password').value = savedPassword;
+                login();
+                sessionStorage.removeItem('adminPassword');
+            }
+        }
+
         // Inicializar al cargar la página
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            checkAutoLogin();
+        });
 
         // Permitir login con Enter
         document.getElementById('password').addEventListener('keypress', function(e) {

@@ -130,6 +130,14 @@ class LetterEngine {
             this.closeLetter();
         });
 
+        // Evento botón galería
+        const galleryBtn = document.getElementById('galleryBtn');
+        if (galleryBtn) {
+            galleryBtn.addEventListener('click', () => {
+                window.open('/Carta/public/galeria.html', '_blank');
+            });
+        }
+
         // Parallax events
         this.setupParallax();
         
