@@ -2,7 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#f5f1ed">
     <title>Panel de Administración - Cartas Románticas</title>
     <style>
         * {
@@ -13,7 +18,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ffe0ef, #ffc8da);
+            background: linear-gradient(135deg, #f5f1ed, #ede5db);
             min-height: 100vh;
             color: #333;
         }
@@ -27,13 +32,13 @@
         .header {
             text-align: center;
             margin-bottom: 40px;
-            color: #ff5fa5;
+            color: #c4a882;
         }
 
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(255, 95, 165, 0.3);
+            text-shadow: 0 2px 4px rgba(196, 168, 130, 0.4);
         }
 
         .header p {
@@ -42,11 +47,11 @@
         }
 
         .login-form, .admin-panel {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(245, 241, 237, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(255, 95, 165, 0.2);
+            box-shadow: 0 20px 40px rgba(196, 168, 130, 0.25);
             margin-bottom: 30px;
         }
 
@@ -67,13 +72,13 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #ff5fa5;
+            color: #c4a882;
         }
 
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #ffc8da;
+            border: 2px solid #d4c4b0;
             border-radius: 10px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
@@ -81,7 +86,7 @@
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: #ff9ad0;
+            border-color: #c4a882;
         }
 
         .form-group textarea {
@@ -90,11 +95,11 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+            background: linear-gradient(135deg, #c4a882, #a89073);
             border: none;
             padding: 12px 30px;
             border-radius: 25px;
-            color: white;
+            color: #f5f1ed;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -105,7 +110,7 @@
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 154, 208, 0.4);
+            box-shadow: 0 8px 20px rgba(196, 168, 130, 0.4);
         }
 
         .btn-secondary {
@@ -125,10 +130,10 @@
         }
 
         .letter-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(245, 241, 237, 0.9);
             border-radius: 15px;
             padding: 20px;
-            border: 2px solid #ffc8da;
+            border: 2px solid #d4c4b0;
             transition: transform 0.2s ease;
         }
 
@@ -137,7 +142,7 @@
         }
 
         .letter-card h3 {
-            color: #ff5fa5;
+            color: #c4a882;
             margin-bottom: 10px;
             font-size: 1.3rem;
         }
@@ -195,11 +200,11 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #ffc8da;
+            border-bottom: 2px solid #d4c4b0;
         }
 
         .modal-header h2 {
-            color: #ff5fa5;
+            color: #c4a882;
             margin: 0;
         }
 
@@ -207,14 +212,14 @@
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: #ff5fa5;
+            color: #c4a882;
             cursor: pointer;
             padding: 5px;
         }
 
         .photo-upload {
             position: relative;
-            border: 2px dashed #ffc8da;
+            border: 2px dashed #d4c4b0;
             border-radius: 10px;
             padding: 20px;
             text-align: center;
@@ -223,7 +228,7 @@
         }
 
         .photo-upload:hover {
-            border-color: #ff9ad0;
+            border-color: #c4a882;
         }
 
         .photo-upload input[type="file"] {
@@ -264,7 +269,7 @@
         .tabs {
             display: flex;
             margin-bottom: 20px;
-            background: rgba(255, 200, 218, 0.3);
+            background: rgba(212, 196, 176, 0.3);
             border-radius: 10px;
             padding: 5px;
         }
@@ -281,8 +286,8 @@
         }
 
         .tab.active {
-            background: white;
-            color: #ff5fa5;
+            background: #f5f1ed;
+            color: #c4a882;
             font-weight: 600;
         }
 
@@ -308,41 +313,39 @@
             }
         }
     </style>
+    
+    <!-- SUPABASE INTEGRATION -->
+    <script src="../supabase/supabase-client.js"></script>
+    <script src="../supabase/carta-service.js"></script>
+    <script src="../supabase/respuesta-service.js"></script>
+    <script src="../supabase/storage-service.js"></script>
+    
+    <!-- BACKEND API (Fallback) -->
+    <script src="../public/assets/backend-api.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>💕 Panel de Administración</h1>
-            <p>Creá cartas hermosas para Jimena de manera fácil y elegante</p>
-        </div>
-
-        <!-- Login Form -->
-        <div class="login-form" id="loginForm">
-            <h2 style="color: #ff5fa5; text-align: center; margin-bottom: 30px;">Acceso Administrativo</h2>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="Ingresa la contraseña">
-            </div>
-            <div id="loginError" class="error-message" style="display: none;">
-                Contraseña incorrecta. Intenta nuevamente.
-            </div>
-            <button class="btn" onclick="login()">Ingresar 💖</button>
+            <h1>Administración</h1>
+         
         </div>
 
         <!-- Admin Panel -->
-        <div class="admin-panel" id="adminPanel">
+        <div class="admin-panel" id="adminPanel" style="display: block;">
             <div class="tabs">
-                <button class="tab active" onclick="showTab('letters')">💌 Cartas para Jime</button>
-                <button class="tab" onclick="showTab('create')">💕 Nueva Carta</button>
-                <button class="tab" onclick="showTab('config')">⚙️ Configuración</button>
+                <button class="tab active" onclick="showTab('letters')">Cartas</button>
+                <button class="tab" onclick="showTab('create')">Nueva Carta</button>
+                <button class="tab" onclick="showTab('config')">Configuración</button>
+                <button class="tab" onclick="showTab('export')">📁 Export</button>
             </div>
 
             <!-- Tab: Lista de Cartas -->
             <div class="tab-content active" id="lettersTab">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="color: #ff5fa5;">💌 Cartas para Jimena</h2>
+                    <h2 style="color:#666;">Cartas</h2>
                     <div>
-                        <button class="btn" onclick="openGallery()">👀 Ver Galería</button>
+                        <button class="btn" onclick="openGallery()">Galería</button>
+                        <button class="btn" onclick="openConversations()" style="background: linear-gradient(135deg, #d4af37, #b8941f);">Conversaciones</button>
                         <button class="btn" onclick="showTab('create')">+ Nueva Carta</button>
                     </div>
                 </div>
@@ -353,12 +356,12 @@
 
             <!-- Tab: Crear Nueva Carta -->
             <div class="tab-content" id="createTab">
-                <h2 style="color: #ff5fa5; margin-bottom: 20px;">💕 Crear Nueva Carta para Jimena</h2>
+                <h2 style="color: #666; margin-bottom: 20px;">Nueva Carta</h2>
                 <form id="letterForm">
                     <div class="form-group">
                         <label for="letterId">ID de la Carta</label>
                         <input type="text" id="letterId" placeholder="ej: carta-navidad-2025" required>
-                        <small style="color: #666;">Identificador único para la carta (solo letras, números y guiones)</small>
+                        <small style="color: #666;">Identificador </small>
                     </div>
                     
                     <div class="form-group">
@@ -401,14 +404,14 @@
                         </label>
                     </div>
                     
-                    <button type="submit" class="btn">💖 Guardar Carta</button>
+                    <button type="submit" class="btn">Guardar</button>
                     <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar Formulario</button>
                 </form>
             </div>
 
             <!-- Tab: Configuración -->
             <div class="tab-content" id="configTab">
-                <h2 style="color: #ff5fa5; margin-bottom: 20px;">Configuración General</h2>
+                <h2 style="color: #666; margin-bottom: 20px;">Configuración General</h2>
                 <div class="form-group">
                     <label for="defaultLetter">Carta por Defecto</label>
                     <select id="defaultLetter">
@@ -422,6 +425,33 @@
                 </div>
                 
                 <button class="btn" onclick="saveConfig()">Guardar Configuración</button>
+            </div>
+
+            <!-- Tab: Exportar para GitHub Pages -->
+            <div class="tab-content" id="exportTab">
+                <h2 style="color: #666; margin-bottom: 20px;">📁 Exportar para GitHub Pages</h2>
+                
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: #c4a882; margin-bottom: 15px;">📋 Instrucciones:</h3>
+                    <ol style="color: #666; line-height: 1.6;">
+                        <li><strong>Crear/editar cartas</strong> en este panel admin (localmente)</li>
+                        <li><strong>Exportar datos</strong> usando el botón de abajo</li>
+                        <li><strong>Reemplazar</strong> el archivo <code>data/cartas.json</code> con el descargado</li>
+                        <li><strong>Hacer git push</strong> para actualizar GitHub Pages</li>
+                        <li><strong>¡Listo!</strong> Jimena verá las cartas desde cualquier dispositivo</li>
+                    </ol>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button class="btn" onclick="exportForGitHub()" style="background: linear-gradient(135deg, #28a745, #20c997); font-size: 1.1rem; padding: 15px 30px;">
+                        📥 Descargar cartas.json para GitHub Pages
+                    </button>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px;">
+                    <strong>💡 Tip:</strong> GitHub Pages es perfecto para que Jimena vea las cartas desde cualquier lugar, 
+                    pero la edición se hace localmente para mantener control total de los datos.
+                </div>
             </div>
         </div>
     </div>
@@ -456,32 +486,113 @@
 
         async function init() {
             try {
-                const response = await fetch('../data/cartas.json');
-                if (response.ok) {
-                    currentData = await response.json();
+                // Esperar un poco para que los scripts se carguen
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 🚀 1. INTENTAR SUPABASE PRIMERO
+                if (await trySupabaseConnection()) {
+                    console.log('🎯 Usando Supabase como fuente de datos principal');
+                    currentData = {
+                        cartas: await window.cartaService.getAllCartas(),
+                        configuracion: DEFAULT_CONFIG.configuracion
+                    };
+                    showMessage('✅ Conectado a Supabase - Datos permanentes activos', 'success');
+                    
+                    // Configurar tiempo real
+                    await setupRealTimeUpdates();
+                    
                 } else {
-                    currentData = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                    // 💾 2. FALLBACK A LOCALSTORAGE
+                    const savedData = localStorage.getItem('cartasData');
+                    if (savedData) {
+                        currentData = JSON.parse(savedData);
+                        console.log('💾 Datos cargados desde localStorage');
+                        showMessage('⚠️ Usando localStorage - Configura Supabase para persistencia permanente', 'warning');
+                    } else {
+                        // 📄 3. FALLBACK A ARCHIVO JSON
+                        try {
+                            const response = await fetch('../data/cartas.json');
+                            if (response.ok) {
+                                currentData = await response.json();
+                                console.log('📄 Datos cargados desde archivo JSON');
+                            } else {
+                                currentData = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                                console.log('🔧 Usando configuración por defecto');
+                            }
+                        } catch (fallbackError) {
+                            currentData = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+                            console.log('🔧 Usando configuración por defecto');
+                        }
+                    }
                 }
             } catch (error) {
+                console.error('Error en init:', error);
                 currentData = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-                console.log('Usando configuración por defecto');
+                showMessage('❌ Error de conexión - Usando datos por defecto', 'error');
             }
+            
+            // Asegurar que currentData tenga la estructura correcta
+            if (!currentData.cartas) currentData.cartas = [];
+            if (!currentData.configuracion) currentData.configuracion = DEFAULT_CONFIG.configuracion;
             
             updateDefaultLetterSelect();
             setTodayDate();
         }
 
-        function login() {
-            const password = document.getElementById('password').value;
-            const correctPassword = currentData?.configuracion?.password || 'miamor123';
-            
-            if (password === correctPassword) {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('loginError').style.display = 'none';
+        // 🔗 Probar conexión a Supabase
+        async function trySupabaseConnection() {
+            try {
+                if (window.supabaseClient) {
+                    return await window.supabaseClient.testConnection();
+                }
+                return false;
+            } catch (error) {
+                console.log('Supabase no disponible:', error);
+                return false;
+            }
+        }
+
+        // 🔄 Configurar actualizaciones en tiempo real
+        async function setupRealTimeUpdates() {
+            try {
+                // Escuchar cambios en cartas
+                await window.cartaService.setupRealtimeCartas((payload) => {
+                    console.log('📡 Actualización en tiempo real:', payload);
+                    
+                    // Recargar cartas si hay cambios
+                    if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE' || payload.eventType === 'DELETE') {
+                        refreshCartasFromSupabase();
+                    }
+                });
+                
+                console.log('🔄 Tiempo real configurado correctamente');
+            } catch (error) {
+                console.error('Error configurando tiempo real:', error);
+            }
+        }
+
+        // 🔄 Refrescar cartas desde Supabase
+        async function refreshCartasFromSupabase() {
+            try {
+                const cartas = await window.cartaService.getAllCartas();
+                currentData.cartas = cartas;
+                loadLetters(); // Actualizar UI
+                console.log('🔄 Cartas actualizadas desde Supabase');
+            } catch (error) {
+                console.error('Error refrescando cartas:', error);
+            }
+        }
+
+        async function login() {
+            // Auto-login simplificado
+            try {
+                await init();
                 loadLetters();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
+                showMessage('✅ Panel administrativo listo', 'success');
+            } catch (error) {
+                console.error('Error iniciando admin:', error);
+                showMessage('⚠️ Iniciando en modo básico', 'warning');
+                loadLetters();
             }
         }
 
@@ -574,20 +685,23 @@
             document.getElementById('editModal').style.display = 'block';
         }
 
-        function updateLetter(event, index) {
+        async function updateLetter(event, index) {
             event.preventDefault();
             
-            currentData.cartas[index] = {
+            const updatedLetter = {
                 id: document.getElementById('editId').value,
                 titulo: document.getElementById('editTitle').value,
                 destinatario: document.getElementById('editRecipient').value,
                 cuerpo: document.getElementById('editContent').value,
                 foto: currentData.cartas[index].foto, // Mantener foto existente
-                audio: currentData.cartas[index].audio, // Mantener audio existente
                 fecha: document.getElementById('editDate').value,
                 activa: document.getElementById('editActive').checked
             };
             
+            currentData.cartas[index] = updatedLetter;
+            
+            // Actualizar en Supabase también
+            await updateLetterInSupabase(updatedLetter);
             saveData();
             closeModal();
             loadLetters();
@@ -607,7 +721,7 @@
             document.getElementById('editModal').style.display = 'none';
         }
 
-        document.getElementById('letterForm').addEventListener('submit', function(e) {
+        document.getElementById('letterForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const newLetter = {
@@ -616,7 +730,6 @@
                 destinatario: document.getElementById('letterRecipient').value,
                 cuerpo: document.getElementById('letterContent').value,
                 foto: window.currentPhotoBase64 || null,
-                audio: null,
                 fecha: document.getElementById('letterDate').value,
                 activa: document.getElementById('letterActive').checked
             };
@@ -634,6 +747,8 @@
                 currentData.configuracion.cartaActual = newLetter.id;
             }
             
+            // Guardar en Supabase y localStorage
+            await saveLetterToSupabase(newLetter);
             saveData();
             clearForm();
             showMessage('¡Carta creada exitosamente! 💕', 'success');
@@ -699,15 +814,132 @@
             showMessage('Configuración guardada exitosamente ⚙️', 'success');
         }
 
-        function saveData() {
-            // En un entorno estático, los datos se guardan en localStorage
-            // para persistencia temporal. En un entorno con backend,
-            // aquí harías una llamada a la API
-            localStorage.setItem('cartasData', JSON.stringify(currentData));
-            console.log('Datos guardados en localStorage');
-            
-            // También mostrar los datos para copiar manualmente al cartas.json
-            console.log('Datos para copiar a cartas.json:', JSON.stringify(currentData, null, 2));
+        async function saveLetterToSupabase(letter) {
+            try {
+                if (!window.cartaService) {
+                    console.log('Supabase no disponible, solo guardando en localStorage');
+                    return;
+                }
+
+                // Verificar conexión a Supabase
+                if (!(await trySupabaseConnection())) {
+                    console.log('No hay conexión a Supabase, solo guardando en localStorage');
+                    return;
+                }
+
+                // Preparar datos para Supabase con mapeo correcto
+                const supabaseData = {
+                    titulo: letter.titulo,
+                    cuerpo: letter.cuerpo,
+                    destinatario: letter.destinatario,
+                    remitente: letter.remitente || 'Tu amor secreto',
+                    fecha_programada: letter.fecha ? new Date(letter.fecha).toISOString() : null,
+                    activa: letter.activa !== undefined ? letter.activa : true,
+                    favorita: false,
+                    foto_url: letter.foto || null,
+                    tema_color: 'beige'
+                };
+
+                console.log('🔄 Enviando datos a Supabase:', supabaseData);
+                const result = await window.cartaService.crearCarta(supabaseData);
+                
+                if (!result || result.error) {
+                    console.error('Error guardando en Supabase:', result?.error || 'Sin respuesta');
+                    showMessage('❌ Error guardando en Supabase: ' + (result?.error?.message || 'Error desconocido'), 'error');
+                } else {
+                    console.log('✅ Carta guardada en Supabase exitosamente:', result);
+                    showMessage('☁️ Carta sincronizada con Supabase - ID: ' + result.id, 'success');
+                    
+                    // Actualizar el ID local con el ID de Supabase
+                    letter.supabaseId = result.id;
+                }
+            } catch (error) {
+                console.error('Error al intentar guardar en Supabase:', error);
+                showMessage('⚠️ Error de conexión con Supabase. Carta guardada solo localmente.', 'warning');
+            }
+        }
+
+        async function updateLetterInSupabase(letter) {
+            try {
+                if (!window.cartaService || !(await trySupabaseConnection())) {
+                    console.log('Supabase no disponible para actualización');
+                    return;
+                }
+
+                const supabaseData = {
+                    titulo: letter.titulo,
+                    cuerpo: letter.cuerpo,
+                    destinatario: letter.destinatario,
+                    remitente: letter.remitente || 'Tu amor secreto',
+                    fecha_programada: letter.fecha ? new Date(letter.fecha).toISOString() : null,
+                    activa: letter.activa || true,
+                    foto_url: letter.foto || null
+                };
+
+                const result = await window.cartaService.actualizarCarta(letter.id, supabaseData);
+                
+                if (result.error) {
+                    console.error('Error actualizando en Supabase:', result.error);
+                    showMessage('❌ Error actualizando en Supabase', 'error');
+                } else {
+                    console.log('✅ Carta actualizada en Supabase');
+                    showMessage('☁️ Carta sincronizada con Supabase', 'success');
+                }
+            } catch (error) {
+                console.error('Error al actualizar en Supabase:', error);
+                showMessage('⚠️ Error de conexión con Supabase', 'warning');
+            }
+        }
+
+        async function trySupabaseConnection() {
+            try {
+                if (!window.supabaseClient) {
+                    console.log('❌ supabaseClient no está disponible');
+                    return false;
+                }
+                
+                // Esperar a que se inicialice
+                const client = await window.supabaseClient.getClient();
+                if (!client) {
+                    console.log('❌ No se pudo obtener el cliente de Supabase');
+                    return false;
+                }
+                
+                // Probar una consulta simple
+                const { data, error } = await client
+                    .from('cartas')
+                    .select('id')
+                    .limit(1);
+                
+                if (error) {
+                    console.log('❌ Error en consulta Supabase:', error);
+                    return false;
+                }
+                
+                console.log('✅ Conexión a Supabase exitosa');
+                return true;
+            } catch (error) {
+                console.log('❌ Error de conexión Supabase:', error);
+                return false;
+            }
+        }
+
+        async function saveData() {
+            try {
+                // Guardar en localStorage para desarrollo local
+                localStorage.setItem('cartasData', JSON.stringify(currentData));
+                console.log('💾 Datos guardados en localStorage');
+                
+                // Mostrar instrucciones para GitHub Pages
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    showMessage('💾 Datos guardados localmente. Para GitHub Pages: copia los datos a data/cartas.json', 'info');
+                } else {
+                    showMessage('ℹ️ En GitHub Pages: Los cambios son temporales. Usa la versión local para editar.', 'warning');
+                }
+            } catch (error) {
+                console.error('❌ Error guardando datos:', error);
+                showMessage('Error al guardar los datos', 'error');
+            }
         }
 
         function showMessage(message, type) {
@@ -728,9 +960,124 @@
             }, 5000);
         }
 
+        // Función para exportar datos para GitHub Pages
+        function exportForGitHub() {
+            if (!currentData || !currentData.cartas) {
+                showMessage('No hay datos para exportar', 'error');
+                return;
+            }
+
+            const dataStr = JSON.stringify(currentData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'cartas.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showMessage('📁 Descargado cartas.json. Cópialo a data/cartas.json para GitHub Pages', 'success');
+        }
+
         // Abrir galería
         function openGallery() {
             window.open('../public/galeria.html', '_blank');
+        }
+
+        // Abrir conversaciones
+        function openConversations() {
+            window.open('conversaciones.html', '_blank');
+        }
+
+        // Función de debug para Supabase
+        async function debugSupabase() {
+            console.group('🔧 DIAGNÓSTICO SUPABASE');
+            
+            try {
+                // 1. Verificar si los scripts están cargados
+                console.log('1. Scripts cargados:');
+                console.log('   - window.supabaseClient:', !!window.supabaseClient);
+                console.log('   - window.cartaService:', !!window.cartaService);
+                console.log('   - window.respuestaService:', !!window.respuestaService);
+                
+                // 2. Verificar configuración
+                if (window.supabaseClient) {
+                    console.log('2. Configuración Supabase:', window.supabaseClient.supabase ? 'OK' : 'ERROR');
+                }
+                
+                // 3. Probar conexión
+                console.log('3. Probando conexión...');
+                const connectionTest = await trySupabaseConnection();
+                console.log('   - Conexión:', connectionTest ? '✅ OK' : '❌ FALLO');
+                
+                if (!connectionTest) {
+                    console.log('3.1. Diagnóstico detallado:');
+                    if (!window.supabaseClient) {
+                        console.log('   - ❌ supabaseClient no disponible');
+                    } else {
+                        console.log('   - ✅ supabaseClient disponible');
+                        console.log('   - Inicializado:', window.supabaseClient.initialized);
+                        console.log('   - URL:', window.supabaseClient.supabase ? 'Configurado' : 'No configurado');
+                    }
+                }
+                
+                // 4. Probar consulta a la tabla cartas
+                if (connectionTest && window.cartaService) {
+                    console.log('4. Probando consulta a tabla cartas...');
+                    const cartas = await window.cartaService.getAllCartas();
+                    console.log('   - Cartas obtenidas:', cartas?.length || 0);
+                    
+                    if (cartas && cartas.length > 0) {
+                        console.log('   - Primera carta:', cartas[0]);
+                    }
+                }
+                
+                // 5. Mostrar estado de tablas
+                if (connectionTest && window.supabaseClient) {
+                    console.log('5. Verificando estructura de tablas...');
+                    const client = await window.supabaseClient.getClient();
+                    
+                    // Probar tabla cartas
+                    const { data: cartasTest, error: cartasError } = await client
+                        .from('cartas')
+                        .select('count')
+                        .limit(1);
+                    console.log('   - Tabla cartas:', cartasError ? '❌ ' + cartasError.message : '✅ OK');
+                    
+                    // Probar tabla respuestas
+                    const { data: respuestasTest, error: respuestasError } = await client
+                        .from('respuestas')
+                        .select('count')
+                        .limit(1);
+                    console.log('   - Tabla respuestas:', respuestasError ? '❌ ' + respuestasError.message : '✅ OK');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error en diagnóstico:', error);
+            }
+            
+            console.groupEnd();
+            
+            // Mostrar resultado en UI
+            showMessage('🔧 Diagnóstico completo. Revisa la consola del navegador (F12)', 'info');
+        }
+
+        // Agregar botón de debug (solo en desarrollo)
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            document.addEventListener('DOMContentLoaded', () => {
+                const header = document.querySelector('.header');
+                if (header) {
+                    const debugBtn = document.createElement('button');
+                    debugBtn.textContent = '🔧 Debug Supabase';
+                    debugBtn.className = 'btn btn-secondary';
+                    debugBtn.style.marginTop = '10px';
+                    debugBtn.onclick = debugSupabase;
+                    header.appendChild(debugBtn);
+                }
+            });
         }
 
         // Auto-login desde galería
@@ -738,9 +1085,10 @@
             const savedPassword = sessionStorage.getItem('adminPassword');
             if (savedPassword) {
                 document.getElementById('password').value = savedPassword;
-                login();
                 sessionStorage.removeItem('adminPassword');
             }
+            // Siempre hacer login automático
+            login();
         }
 
         // Inicializar al cargar la página
@@ -749,12 +1097,15 @@
             checkAutoLogin();
         });
 
-        // Permitir login con Enter
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
-        });
+        // Permitir login con Enter (solo si el elemento existe)
+        const passwordField = document.getElementById('password');
+        if (passwordField) {
+            passwordField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+        }
     </script>
 </body>
 </html>

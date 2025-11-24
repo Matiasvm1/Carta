@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Test - Sistema de Respuestas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe0ef, #ffc8da);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+        }
+        
+        .success { border-color: #28a745; background: #f8fff9; }
+        .error { border-color: #dc3545; background: #fff8f8; }
+        .info { border-color: #17a2b8; background: #f8ffff; }
+        
+        h1 { color: #ff5fa5; text-align: center; }
+        h2 { color: #333; }
+        
+        button {
+            background: #ff5fa5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover { background: #ff3e93; }
+        
+        .console-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>🧪 Test del Sistema de Respuestas para Jimena</h1>
+        
+        <div class="test-section info">
+            <h2>🔍 Estado del Sistema</h2>
+            <p><strong>Usuario detectado:</strong> <span id="userInfo">Cargando...</span></p>
+            <p><strong>Botón flotante:</strong> <span id="buttonStatus">Verificando...</span></p>
+            <p><strong>Sistema de respuestas:</strong> <span id="systemStatus">Inicializando...</span></p>
+        </div>
+
+        <div class="test-section">
+            <h2>🎯 Acciones de Prueba</h2>
+            <button onclick="testUserDetection()">Verificar Detección de Usuario</button>
+            <button onclick="testButtonVisibility()">Verificar Botón Flotante</button>
+            <button onclick="testResponseSystem()">Probar Sistema de Respuestas</button>
+            <button onclick="testDataPersistence()">Verificar Persistencia</button>
+            <button onclick="clearAllData()">🗑️ Limpiar Datos</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Console Output</h2>
+            <div class="console-output" id="consoleOutput">
+                Esperando resultados de pruebas...
+            </div>
+        </div>
+
+        <div class="test-section info">
+            <h2>📖 Instrucciones para Jimena</h2>
+            <ol>
+                <li><strong>Abrir la carta:</strong> Ve a <code>http://localhost:8080</code></li>
+                <li><strong>Buscar el botón flotante:</strong> Debería aparecer un botón 💕 en la esquina inferior derecha</li>
+                <li><strong>Hacer clic en el botón:</strong> Se abrirá la interfaz de respuesta</li>
+                <li><strong>Escribir respuesta:</strong> Usa las respuestas rápidas o escribe un mensaje personalizado</li>
+                <li><strong>Enviar:</strong> El sistema guardará la respuesta y mostrará instrucciones para persistir</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Cargar sistema de respuestas -->
+    <link rel="stylesheet" href="assets/response-interface.css">
+    <script src="assets/conversation-engine.js"></script>
+    <script src="assets/response-interface.js"></script>
+
+    <script>
+        let consoleDiv = document.getElementById('consoleOutput');
+        let originalConsoleLog = console.log;
+        
+        // Interceptar console.log para mostrar en la página
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            consoleDiv.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        };
+
+        // Funciones de prueba
+        function testUserDetection() {
+            console.log('🔍 Probando detección de usuario...');
+            
+            if (window.conversationEngine) {
+                const user = window.conversationEngine.currentUser;
+                console.log('✅ Usuario detectado:', user);
+                document.getElementById('userInfo').textContent = `${user.nombre} (${user.rol})`;
+                
+                if (user.rol === 'lectora') {
+                    document.getElementById('userInfo').parentElement.className = 'test-section success';
+                }
+            } else {
+                console.log('⚠️ ConversationEngine no está disponible aún');
+                setTimeout(testUserDetection, 1000);
+            }
+        }
+
+        function testButtonVisibility() {
+            console.log('👀 Verificando visibilidad del botón flotante...');
+            
+            const button = document.querySelector('.response-trigger');
+            if (button) {
+                const isVisible = button.classList.contains('visible');
+                console.log('✅ Botón encontrado, visible:', isVisible);
+                document.getElementById('buttonStatus').textContent = isVisible ? 'Visible ✅' : 'Oculto ❌';
+                
+                if (isVisible) {
+                    document.getElementById('buttonStatus').parentElement.className = 'test-section success';
+                }
+            } else {
+                console.log('❌ Botón flotante no encontrado');
+                document.getElementById('buttonStatus').textContent = 'No encontrado ❌';
+            }
+        }
+
+        function testResponseSystem() {
+            console.log('💝 Probando sistema de respuestas...');
+            
+            if (window.responseInterface) {
+                console.log('✅ ResponseInterface disponible');
+                document.getElementById('systemStatus').textContent = 'Funcional ✅';
+                
+                // Simular apertura de la interfaz
+                if (window.responseInterface.triggerButton) {
+                    window.responseInterface.triggerButton.click();
+                    console.log('🎉 Interfaz de respuesta activada manualmente');
+                }
+            } else {
+                console.log('❌ ResponseInterface no disponible');
+                document.getElementById('systemStatus').textContent = 'Error ❌';
+            }
+        }
+
+        function testDataPersistence() {
+            console.log('💾 Verificando persistencia de datos...');
+            
+            const localData = localStorage.getItem('cartas_local_data');
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                console.log('✅ Datos locales encontrados:', parsed);
+            } else {
+                console.log('ℹ️ No hay datos locales guardados aún');
+            }
+        }
+
+        function clearAllData() {
+            console.log('🗑️ Limpiando todos los datos...');
+            localStorage.clear();
+            sessionStorage.clear();
+            console.log('✅ Datos limpiados');
+            location.reload();
+        }
+
+        // Auto-ejecutar pruebas al cargar
+        setTimeout(() => {
+            console.log('🚀 Iniciando pruebas automáticas...');
+            testUserDetection();
+            setTimeout(testButtonVisibility, 1500);
+            setTimeout(testResponseSystem, 2000);
+            setTimeout(testDataPersistence, 2500);
+        }, 1000);
+
+        // Escuchar eventos del sistema
+        window.addEventListener('conversationEngineReady', (e) => {
+            console.log('🎉 Evento conversationEngineReady recibido:', e.detail);
+        });
+
+        console.log('🧪 Página de pruebas cargada - Sistema listo para testing');
+    </script>
+</body>
+</html>

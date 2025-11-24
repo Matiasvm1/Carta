@@ -1,0 +1,20 @@
+{
+  "cartas": [
+    {
+      "id": "carta-jime-2025",
+      "titulo": "Jime ",
+      "destinatario": "Jime",
+      "cuerpo": "Hola flaquita, ¿cómo estás?<br><br>Recién terminé de estudiar y no me podía dormir. Estaba acostado, con el teléfono ya apagado, y mi cabeza seguía en modo acelerado. Y ahí, sin buscarlo mucho, empecé a pensar en nosotros. Pensé en nuestra relación, en lo que somos, y de a poco me fue entrando una calma… una paz muy linda. Me emocionó que algo tan simple como pensarte me ordenara tanto. Pero me pasó: me calmó, me sirvió.<br><br>Y me alegra un montón tener esta relación con vos, donde no tengo que estar preocupándome por nada, donde estoy feliz, tranquilo, contento de elegirte todos los días. Sentí que quería darte algo, aunque sea chiquito. Hace rato no te regalo nada y ahora no estoy con plata, pero se me ocurrió hacerte esto. Porque cuando se me venís a la cabeza, lo que aparece en mi cuerpo es lindo, es paz.<br><br>Quería contarte eso… y decirte también cuánto te amo, mi amor. Me encanta pasar todos los días con vos, elegirte todos los días, escucharte quejarte todos los días. Cuando decís que no te aguantás ni vos sola y yo me río mirándote… son momentos simples, cotidianos, pero a mí me encantan.<br><br>Son parte de lo que somos: tranquilidad, risas, chicanas, comprensión, sostén. Estoy muy agradecido por vos. Por quién sos. Por cómo me sorprendió la vida este año. Sos una mina súper laburadora, con los códigos bien puestos, con valores y ética como pocas personas. Y eso sin contar la parte del corazón: cómo estás para tu familia, cómo das todo por ellos, cómo son tu motor.<br><br>La verdad, sos todo lo que quiero en una persona. Y ojalá pueda ir construyéndome de a poco para estar a la altura de semejante mujer. A veces me agarra esa ansiedad de crecer rápido, de terminar mis cosas, de avanzar. Y sí, lo hago por mí… pero últimamente también lo hago pensando en vos. Pensando en nosotros. Pensando en esa otra etapa que quiero vivir con vos.<br><br>Si bien no te pedí algo que es re importante —por vagancia, tiempo o plata— ese momento va a llegar, mi amor. Y quiero hacerlo lo más lindo posible. Porque estoy seguro de esto: esta relación me da paz, me da seguridad, me da muchísimo amor y sobre todo… me da futuro. Te amo amor mio!",
+      "foto": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAoACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUWEHInGBEzKRobHBCCNCUtHwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooA//9k=",
+      "audio": null,
+      "fecha": "2025-11-24",
+      "activa": true
+    }
+  ],
+  "configuracion": {
+    "cartaActual": "carta-jime-2025",
+    "siteName": "Cartas Románticas",
+    "password": "miamor123",
+     "baseURL": "https://Matiasvm1.github.io/Carta/"}
+  
+    }

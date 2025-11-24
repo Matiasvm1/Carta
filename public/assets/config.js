@@ -20,7 +20,7 @@ window.LETTER_CONFIG = {
     ],
     
     // Colores de corazones flotantes
-    heartColors: ['❤️','💕','💗','💞','💖'],
+    heartColors: ['♡','♥','☾','✧','◦'],
     
     // Colores de confetti
     confettiColors: ['#ff9acb','#ffc7e1','#fff1f7','#ff7db1','#ffb6c8']
@@ -164,7 +164,7 @@ window.OCCASION_PRESETS = {
   valentine: {
     theme: {
       primaryColor: '#e91e63',
-      heartColors: ['💖','💕','💗','❤️','💝']
+      heartColors: ['♡','♥','☾','✧','◦']
     }
   },
   

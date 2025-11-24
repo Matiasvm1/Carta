@@ -2,14 +2,27 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cartas para Jimena 💕</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#f5f1ed">
+<title>Jime</title>
 
 <style>
+:root {
+  --beige-primary: #c4a882;
+  --beige-secondary: #a89073;
+  --beige-light: #d4c4b0;
+  --beige-background: #f5f1ed;
+  --beige-accent: #ede5db;
+}
+
 body {
   margin: 0;
   font-family: "Georgia", serif;
-  background: radial-gradient(circle at 20% 30%, #ffe0ef, #ffc8da, #ffb4d1, #f7a3c9);
+  background: radial-gradient(circle at 20% 30%, var(--beige-background), var(--beige-accent), var(--beige-light), var(--beige-primary));
   background-size: 170% 170%;
   animation: bgflow 18s ease-in-out infinite;
   min-height: 100vh;
@@ -26,53 +39,113 @@ body {
   100% {background-position: 0% 50%;}
 }
 
-/* Corazones flotantes */
+/* Elementos flotantes beige */
 .heart {
   position: fixed;
   bottom: -20px;
-  color: #ff6da8;
+  color: var(--beige-primary);
   font-size: 22px;
   animation: floatHearts 6s linear infinite;
-  opacity: 0.55;
+  opacity: 0.6;
   z-index: 0;
+  text-shadow: 0 2px 8px rgba(196, 168, 130, 0.3);
 }
 
 @keyframes floatHearts {
-  0% { transform: translateY(0) rotate(0deg); opacity: .3; }
-  50% { opacity: 1; }
+  0% { transform: translateY(0) rotate(0deg); opacity: .4; }
+  50% { opacity: 0.8; }
   100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* Partículas decorativas beige */
+.beige-particles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--beige-primary);
+  border-radius: 50%;
+  animation: sparkle 4s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 0.7; transform: scale(1) rotate(180deg); }
 }
 
 .container {
   text-align: center;
-  background: rgba(255,255,255,0.16);
+  background: rgba(245, 241, 237, 0.25);
   backdrop-filter: blur(24px) saturate(180%);
   padding: 60px 40px;
   border-radius: 30px;
-  box-shadow: 0 25px 70px rgba(255,0,140,0.15);
+  box-shadow: 
+    0 25px 70px rgba(196, 168, 130, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(196, 168, 130, 0.2);
   max-width: 500px;
   position: relative;
   z-index: 2;
 }
 
+/* Decoración de esquinas */
+.container::before,
+.container::after {
+  content: "✧";
+  position: absolute;
+  font-size: 1.5rem;
+  color: var(--beige-primary);
+  opacity: 0.6;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.container::before {
+  top: 20px;
+  left: 20px;
+}
+
+.container::after {
+  bottom: 20px;
+  right: 20px;
+  animation-delay: 1.5s;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+}
+
 h1 {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: #ff5fa5;
-  text-shadow: 0 0 20px rgba(255, 109, 168, 0.45);
+  color: var(--beige-primary);
+  text-shadow: 0 0 20px rgba(196, 168, 130, 0.4);
   animation: softGlow 3s ease-in-out infinite alternate;
+  font-weight: 300;
+  letter-spacing: 2px;
 }
 
 @keyframes softGlow {
-  0% { text-shadow: 0 0 15px rgba(255, 109, 168, 0.35); }
-  100% { text-shadow: 0 0 35px rgba(255, 109, 168, 0.9); }
+  0% { text-shadow: 0 0 15px rgba(196, 168, 130, 0.3); }
+  100% { text-shadow: 0 0 35px rgba(196, 168, 130, 0.7); }
 }
 
 p {
   font-size: 1.3rem;
-  color: #ff5fa5;
+  color: var(--beige-secondary);
   margin-bottom: 40px;
   opacity: 0.9;
+  font-style: italic;
 }
 
 .buttons {
@@ -83,7 +156,7 @@ p {
 }
 
 .btn {
-  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  background: linear-gradient(135deg, var(--beige-primary), var(--beige-secondary));
   border: none;
   padding: 15px 35px;
   border-radius: 25px;
@@ -98,19 +171,38 @@ p {
   gap: 10px;
   min-width: 250px;
   justify-content: center;
+  box-shadow: 0 8px 25px rgba(196, 168, 130, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto brillante en botones */
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(255, 154, 208, 0.4);
+  box-shadow: 0 15px 35px rgba(196, 168, 130, 0.5);
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #ffc8da, #ffb4d1);
+  background: linear-gradient(135deg, var(--beige-light), var(--beige-primary));
 }
 
 .btn-admin {
-  background: linear-gradient(135deg, #ff8fbf, #ff76ae);
+  background: linear-gradient(135deg, var(--beige-secondary), #8b7355);
   font-size: 1rem;
   min-width: 200px;
 }
@@ -119,11 +211,14 @@ p {
   font-size: 4rem;
   margin-bottom: 30px;
   animation: heartBeat 2s ease-in-out infinite;
+  color: var(--beige-primary);
+  text-shadow: 0 0 20px rgba(196, 168, 130, 0.5);
+  filter: drop-shadow(0 4px 8px rgba(196, 168, 130, 0.3));
 }
 
 @keyframes heartBeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.15) rotate(2deg); }
 }
 
 @media (max-width: 600px) {
@@ -150,37 +245,49 @@ p {
 
 <body>
 
-<!-- Corazones flotantes -->
+<!-- Elementos flotantes beige -->
+<div class="beige-particles"></div>
+
 <script>
-const hearts=["❤️","💕","💗","💞","💖"];
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
-  h.style.left=Math.random()*90+"vw";
-  h.style.fontSize=(Math.random()*12+18)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),7000);
-},1200);
+// Elementos flotantes beige
+const beigeSymbols = ["♡", "✧", "◦", "⋆", "✦", "◊"];
+const colors = ["#c4a882", "#a89073", "#d4c4b0", "#8b7355"];
+
+// Corazones flotantes
+setInterval(() => {
+  const element = document.createElement("div");
+  element.className = "heart";
+  element.innerHTML = beigeSymbols[Math.floor(Math.random() * beigeSymbols.length)];
+  element.style.left = Math.random() * 90 + "vw";
+  element.style.fontSize = (Math.random() * 12 + 18) + "px";
+  element.style.color = colors[Math.floor(Math.random() * colors.length)];
+  document.body.appendChild(element);
+  setTimeout(() => element.remove(), 7000);
+}, 1200);
+
+// Partículas brillantes
+setInterval(() => {
+  const particle = document.createElement("div");
+  particle.className = "particle";
+  particle.style.left = Math.random() * 100 + "vw";
+  particle.style.top = Math.random() * 100 + "vh";
+  particle.style.animationDelay = Math.random() * 2 + "s";
+  document.querySelector(".beige-particles").appendChild(particle);
+  setTimeout(() => particle.remove(), 4000);
+}, 800);
 </script>
 
 <div class="container">
-  <div class="heart-decoration">💕</div>
-  <h1>Para Jimena</h1>
-  <p>Un lugar especial lleno de cartas de amor</p>
+  <div class="heart-decoration">♡</div>
+  <h1>✧ Jimena ✧</h1>
+  <p>✦ Espero que te guste mucho mi amor! ✦</p>
   
   <div class="buttons">
     <a href="public/galeria.html" class="btn">
-      📚 Ver todas mis cartas
+      Mis cartas 
     </a>
     
-    <a href="public/index.html" class="btn btn-secondary">
-      💌 Leer carta actual
-    </a>
     
-    <a href="admin/index.html" class="btn btn-admin">
-      ⚙️ Panel de administración
-    </a>
   </div>
 </div>
 

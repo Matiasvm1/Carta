@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 Conversaciones - Panel Admin</title>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2c2c2c;
+            --secondary: #8b7355;
+            --accent: #6d5a47;
+            --background: linear-gradient(135deg, #2a2826 0%, #3d3a37 100%);
+            --text: #ffffff;
+            --text-secondary: #cccccc;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(139, 115, 85, 0.3);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(44, 44, 44, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: rgba(212, 175, 55, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%);
+            color: #ffffff;
+            border: none;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 25px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Conversaciones Grid */
+        .conversations-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .conversations-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        /* Lista de conversaciones */
+        .conversations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .conversation-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conversation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .conversation-card.unread {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .conversation-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .conversation-meta {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .conversation-preview {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .conversation-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .conversation-status {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.unread {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-badge.read {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .response-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .unread-indicator {
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Modal para ver conversación completa */
+        .conversation-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .conversation-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--secondary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--secondary);
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: calc(90vh - 100px);
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .message.from-matias {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-right: 60px;
+        }
+
+        .message.from-jimena {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: 60px;
+        }
+
+        .message-author {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .message-content {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* Estados de carga */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-top: 3px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 20px;
+            }
+
+            .header-title {
+                font-size: 1.4rem;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .conversation-card {
+                padding: 20px;
+            }
+
+            .message.from-matias {
+                margin-right: 20px;
+            }
+
+            .message.from-jimena {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1 class="header-title">
+                <span>⟢</span>
+                Conversaciones
+            </h1>
+            <div class="header-actions">
+                <a href="../public/galeria.html" class="btn">
+                    <span>⟢</span>
+                    Galería
+                </a>
+                <a href="index.html" class="btn">
+                    <span>✎</span>
+                    Nueva Carta
+                </a>
+                <button id="refreshBtn" class="btn btn-primary">
+                    <span>↻</span>
+                    Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container principal -->
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-icon">⟐</span>
+                <div class="stat-number" id="totalLetters">-</div>
+                <div class="stat-label">Cartas Enviadas</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⟡</span>
+                <div class="stat-number" id="totalResponses">-</div>
+                <div class="stat-label">Respuestas Recibidas</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⚬</span>
+                <div class="stat-number" id="unreadCount">-</div>
+                <div class="stat-label">Sin Leer</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">♡</span>
+                <div class="stat-number" id="loveScore">100%</div>
+                <div class="stat-label">Nivel de Amor</div>
+            </div>
+        </div>
+
+        <!-- Conversaciones -->
+        <div class="conversations-header">
+            <h2 class="conversations-title">Todas las Conversaciones</h2>
+            <div class="filter-controls">
+                <button class="filter-btn active" data-filter="all">Todas</button>
+                <button class="filter-btn" data-filter="unread">Sin Leer</button>
+                <button class="filter-btn" data-filter="responded">Con Respuestas</button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando conversaciones...</p>
+        </div>
+
+        <!-- Lista de conversaciones -->
+        <div class="conversations-list" id="conversationsList" style="display: none;">
+            <!-- Se llena dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal para ver conversación -->
+    <div class="conversation-modal" id="conversationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Conversación</h3>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        class ConversationsManager {
+            constructor() {
+                this.conversations = [];
+                this.currentFilter = 'all';
+                this.init();
+            }
+
+            async init() {
+                this.setupEventListeners();
+                await this.loadConversations();
+                this.renderStats();
+                this.renderConversations();
+            }
+
+            setupEventListeners() {
+                // Filtros
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.setFilter(e.target.dataset.filter);
+                    });
+                });
+
+                // Refresh
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    this.refresh();
+                });
+
+                // Modal
+                document.getElementById('modalClose').addEventListener('click', () => {
+                    this.closeModal();
+                });
+
+                document.getElementById('conversationModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'conversationModal') {
+                        this.closeModal();
+                    }
+                });
+
+                // Escape key para cerrar modal
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    }
+                });
+            }
+
+            async loadConversations() {
+                try {
+                    console.log('📊 Iniciando carga de conversaciones...');
+                    
+                    // Verificar servicios disponibles
+                    if (!window.respuestaService) {
+                        console.error('❌ respuestaService no disponible');
+                        throw new Error('Servicio de respuestas no disponible');
+                    }
+                    
+                    // Intentar cargar desde Supabase primero
+                    if (await this.trySupabaseConnection()) {
+                        console.log('📡 Cargando respuestas desde Supabase...');
+                        const allResponses = await window.respuestaService.obtenerTodasLasRespuestas();
+                        
+                        if (allResponses && allResponses.length > 0) {
+                            // Cargar también las cartas para obtener los títulos reales
+                            console.log('📚 Cargando información de cartas...');
+                            const cartas = await window.cartaService.getAllCartas();
+                            
+                            this.conversations = await this.processSupabaseDataWithCartas(allResponses, cartas);
+                            console.log(`✅ ${allResponses.length} respuestas cargadas desde Supabase`);
+                        } else {
+                            console.log('⚠️ No hay respuestas en Supabase');
+                            this.conversations = [];
+                        }
+                        return;
+                    }
+
+                    // Fallback: Intentar cargar desde cartas-v2.json
+                    let data;
+                    try {
+                        const response = await fetch('../data/cartas-v2.json');
+                        if (response.ok) {
+                            data = await response.json();
+                        }
+                    } catch (error) {
+                        // Fallback al archivo original
+                        const response = await fetch('../data/cartas.json');
+                        data = await response.json();
+                    }
+
+                    this.conversations = this.processConversationData(data);
+                    
+                } catch (error) {
+                    console.error('Error cargando conversaciones:', error);
+                    this.showError('Error cargando las conversaciones');
+                }
+            }
+
+            async trySupabaseConnection() {
+                try {
+                    if (!window.supabaseClient) {
+                        console.log('⚠️ supabaseClient no está disponible');
+                        return false;
+                    }
+                    
+                    // Usar el método correcto para obtener el cliente
+                    const client = await window.supabaseClient.getClient();
+                    if (!client) {
+                        console.log('⚠️ No se pudo obtener el cliente Supabase');
+                        return false;
+                    }
+                    
+                    // Realizar una consulta simple para verificar conectividad
+                    const { data, error } = await client
+                        .from('cartas')
+                        .select('id')
+                        .limit(1);
+                    
+                    if (error) {
+                        console.log('❌ Error en consulta Supabase:', error.message);
+                        return false;
+                    }
+                    
+                    console.log('✅ Conexión Supabase verificada');
+                    return true;
+                } catch (error) {
+                    console.log('❌ Supabase no disponible:', error.message);
+                    return false;
+                }
+            }
+
+            async processSupabaseDataWithCartas(responses, cartas) {
+                console.log(`🔄 Procesando ${responses.length} respuestas con ${cartas.length} cartas`);
+                
+                // Crear mapa de cartas por ID para búsqueda rápida
+                const cartasMap = {};
+                cartas.forEach(carta => {
+                    cartasMap[carta.id] = carta;
+                });
+                
+                // Agrupar respuestas por carta
+                const conversationMap = {};
+                
+                responses.forEach(response => {
+                    const cartaId = response.carta_id;
+                    if (!conversationMap[cartaId]) {
+                        const carta = cartasMap[cartaId];
+                        conversationMap[cartaId] = {
+                            cartaId: cartaId,
+                            titulo: carta ? carta.titulo : `Carta #${cartaId}`, // Usar título real o fallback
+                            respuestas: []
+                        };
+                    }
+                    
+                    conversationMap[cartaId].respuestas.push({
+                        id: response.id,
+                        mensaje: response.mensaje,
+                        fecha: new Date(response.fecha).toLocaleString(),
+                        timestamp: new Date(response.fecha).getTime(),
+                        leido: response.leido || false,
+                        autor: response.autor || 'Anónimo'
+                    });
+                });
+
+                // Convertir a array y ordenar por fecha más reciente
+                return Object.values(conversationMap)
+                    .map(conv => {
+                        const sortedRespuestas = conv.respuestas.sort((a, b) => b.timestamp - a.timestamp);
+                        const ultimaActividad = Math.max(...sortedRespuestas.map(r => r.timestamp));
+                        
+                        return {
+                            id: conv.cartaId,
+                            title: conv.titulo,
+                            messages: sortedRespuestas.map(resp => ({
+                                id: resp.id,
+                                content: resp.mensaje,
+                                timestamp: resp.timestamp,
+                                author: resp.autor,
+                                read: resp.leido
+                            })),
+                            lastActivity: ultimaActividad,
+                            unreadCount: sortedRespuestas.filter(r => !r.leido).length,
+                            totalResponses: sortedRespuestas.length
+                        };
+                    })
+                    .sort((a, b) => b.lastActivity - a.lastActivity);
+            }
+
+            processSupabaseData(responses) {
+                console.log(`🔄 Procesando ${responses.length} respuestas de Supabase`);
+                
+                // Agrupar respuestas por carta
+                const conversationMap = {};
+                
+                responses.forEach(response => {
+                    const cartaId = response.carta_id;
+                    if (!conversationMap[cartaId]) {
+                        conversationMap[cartaId] = {
+                            cartaId: cartaId,
+                            titulo: `Carta #${cartaId}`,
+                            respuestas: []
+                        };
+                    }
+                    
+                    conversationMap[cartaId].respuestas.push({
+                        id: response.id,
+                        mensaje: response.mensaje,
+                        fecha: new Date(response.fecha).toLocaleString(),
+                        timestamp: new Date(response.fecha).getTime(),
+                        leido: response.leido || false,
+                        autor: response.autor || 'Anónimo'
+                    });
+                });
+
+                // Convertir a array y ordenar por fecha más reciente
+                return Object.values(conversationMap)
+                    .map(conv => {
+                        const sortedRespuestas = conv.respuestas.sort((a, b) => b.timestamp - a.timestamp);
+                        const ultimaActividad = Math.max(...sortedRespuestas.map(r => r.timestamp));
+                        
+                        return {
+                            id: conv.cartaId,
+                            title: conv.titulo,
+                            messages: sortedRespuestas.map(resp => ({
+                                id: resp.id,
+                                content: resp.mensaje,
+                                timestamp: resp.timestamp,
+                                author: resp.autor,
+                                read: resp.leido
+                            })),
+                            lastActivity: ultimaActividad,
+                            unreadCount: sortedRespuestas.filter(r => !r.leido).length,
+                            totalResponses: sortedRespuestas.length
+                        };
+                    })
+                    .sort((a, b) => b.lastActivity - a.lastActivity);
+            }
+
+            processConversationData(data) {
+                const conversations = [];
+
+                if (data.cartas) {
+                    data.cartas.forEach(carta => {
+                        const conversation = {
+                            id: carta.id,
+                            title: carta.titulo,
+                            lastActivity: carta.fechaCreacion || carta.fecha,
+                            messages: [
+                                {
+                                    id: `${carta.id}-original`,
+                                    author: 'matias',
+                                    content: carta.cuerpo,
+                                    date: carta.fechaCreacion || carta.fecha,
+                                    type: 'letter'
+                                }
+                            ],
+                            unreadCount: 0,
+                            totalResponses: 0,
+                            isRead: carta.estado?.leida || false
+                        };
+
+                        // Agregar respuestas si existen
+                        if (carta.respuestas && carta.respuestas.length > 0) {
+                            carta.respuestas.forEach(respuesta => {
+                                conversation.messages.push({
+                                    id: respuesta.id,
+                                    author: 'jimena',
+                                    content: respuesta.contenido,
+                                    date: respuesta.fecha,
+                                    type: 'response'
+                                });
+
+                                if (!respuesta.estado?.leida) {
+                                    conversation.unreadCount++;
+                                }
+                            });
+                            conversation.totalResponses = carta.respuestas.length;
+                            conversation.lastActivity = carta.respuestas[carta.respuestas.length - 1].fecha;
+                        }
+
+                        conversations.push(conversation);
+                    });
+                }
+
+                return conversations.sort((a, b) => new Date(b.lastActivity) - new Date(a.lastActivity));
+            }
+
+            renderStats() {
+                const totalLetters = this.conversations.length;
+                const totalResponses = this.conversations.reduce((sum, conv) => sum + conv.totalResponses, 0);
+                const unreadCount = this.conversations.reduce((sum, conv) => sum + conv.unreadCount, 0);
+
+                document.getElementById('totalLetters').textContent = totalLetters;
+                document.getElementById('totalResponses').textContent = totalResponses;
+                document.getElementById('unreadCount').textContent = unreadCount;
+            }
+
+            renderConversations() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('conversationsList').style.display = 'block';
+
+                const container = document.getElementById('conversationsList');
+                const filteredConversations = this.getFilteredConversations();
+
+                if (filteredConversations.length === 0) {
+                    container.innerHTML = `
+                        <div class="loading">
+                            <p>No hay conversaciones para mostrar</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                console.log(`🎨 Renderizando ${filteredConversations.length} conversaciones`);
+                console.log('Conversaciones filtradas:', filteredConversations);
+                
+                container.innerHTML = filteredConversations.map(conv => {
+                    try {
+                        return this.getConversationHTML(conv);
+                    } catch (error) {
+                        console.error('Error renderizando conversación:', conv, error);
+                        return `<div class="conversation-card error">Error: ${error.message}</div>`;
+                    }
+                }).join('');
+
+                // Agregar event listeners
+                container.querySelectorAll('.conversation-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        this.openConversation(card.dataset.id);
+                    });
+                });
+            }
+
+            getFilteredConversations() {
+                switch (this.currentFilter) {
+                    case 'unread':
+                        return this.conversations.filter(conv => conv.unreadCount > 0);
+                    case 'responded':
+                        return this.conversations.filter(conv => conv.totalResponses > 0);
+                    default:
+                        return this.conversations;
+                }
+            }
+
+            getConversationHTML(conversation) {
+                // Verificar que existan mensajes
+                if (!conversation.messages || conversation.messages.length === 0) {
+                    console.warn('Conversación sin mensajes:', conversation);
+                    return `
+                        <div class="conversation-card" data-id="${conversation.id}">
+                            <div class="conversation-header">
+                                <h3>${conversation.title || 'Conversación sin título'}</h3>
+                                <p>No hay mensajes</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                const lastMessage = conversation.messages[conversation.messages.length - 1];
+                const previewText = (lastMessage.content || '').replace(/<[^>]*>/g, '').substring(0, 150) + '...';
+                
+                return `
+                    <div class="conversation-card ${(conversation.unreadCount || 0) > 0 ? 'unread' : ''}" data-id="${conversation.id}">
+                        <div class="conversation-header">
+                            <div>
+                                <h3 class="conversation-title">${conversation.title || 'Sin título'}</h3>
+                                <div class="conversation-meta">
+                                    ${this.formatDate(conversation.lastActivity)}
+                                </div>
+                            </div>
+                            <div class="conversation-meta">
+                                ${(conversation.unreadCount || 0) > 0 ? '<div class="unread-indicator"></div>' : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-preview">
+                            ${previewText}
+                        </div>
+                        
+                        <div class="conversation-footer">
+                            <div class="conversation-status">
+                                <span class="status-badge ${conversation.unreadCount > 0 ? 'unread' : 'read'}">
+                                    ${conversation.unreadCount > 0 ? 'Sin leer' : 'Leída'}
+                                </span>
+                                <div class="response-count">
+                                    <span>💬</span>
+                                    <span>${conversation.totalResponses} respuestas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            setFilter(filter) {
+                this.currentFilter = filter;
+                
+                // Actualizar botones
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.filter === filter);
+                });
+
+                this.renderConversations();
+            }
+
+            openConversation(id) {
+                const conversation = this.conversations.find(c => c.id === id);
+                if (!conversation) return;
+
+                document.getElementById('modalTitle').textContent = conversation.title;
+                
+                const modalBody = document.getElementById('modalBody');
+                modalBody.innerHTML = conversation.messages.map(message => `
+                    <div class="message from-${message.author}">
+                        <div class="message-author">
+                            ${message.author === 'matias' ? 'Matias' : 'Jimena'}
+                            ${message.type === 'letter' ? '💌' : '💝'}
+                        </div>
+                        <div class="message-content">
+                            ${message.content}
+                        </div>
+                        <div class="message-time">
+                            ${this.formatDate(message.date, true)}
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('conversationModal').classList.add('active');
+                
+                // Marcar como leída si tenía mensajes sin leer
+                if (conversation.unreadCount > 0) {
+                    this.markAsRead(id);
+                }
+            }
+
+            closeModal() {
+                document.getElementById('conversationModal').classList.remove('active');
+            }
+
+            markAsRead(conversationId) {
+                const conversation = this.conversations.find(c => c.id === conversationId);
+                if (conversation) {
+                    conversation.unreadCount = 0;
+                    this.renderStats();
+                    this.renderConversations();
+                }
+            }
+
+            formatDate(dateString, includeTime = false) {
+                const date = new Date(dateString);
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+                
+                if (includeTime) {
+                    options.hour = '2-digit';
+                    options.minute = '2-digit';
+                }
+                
+                return date.toLocaleDateString('es-ES', options);
+            }
+
+            async refresh() {
+                const refreshBtn = document.getElementById('refreshBtn');
+                refreshBtn.style.transform = 'rotate(360deg)';
+                
+                await this.loadConversations();
+                this.renderStats();
+                this.renderConversations();
+                
+                setTimeout(() => {
+                    refreshBtn.style.transform = '';
+                }, 500);
+            }
+
+            showError(message) {
+                const container = document.getElementById('conversationsList');
+                container.innerHTML = `
+                    <div class="loading">
+                        <p style="color: var(--danger);">${message}</p>
+                        <button onclick="location.reload()" class="btn" style="margin-top: 15px;">
+                            Intentar de nuevo
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Función de testing para debug
+        window.testConversations = async () => {
+            console.log('🧪 Iniciando test de conversaciones...');
+            
+            // Verificar servicios
+            console.log('Supabase Client:', !!window.supabaseClient);
+            console.log('Respuesta Service:', !!window.respuestaService);
+            console.log('Carta Service:', !!window.cartaService);
+            
+            if (window.conversationsManager) {
+                try {
+                    await window.conversationsManager.loadConversations();
+                    console.log('✅ Test completado');
+                } catch (error) {
+                    console.error('❌ Test falló:', error);
+                }
+            }
+        };
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            window.conversationsManager = new ConversationsManager();
+        });
+    </script>
+
+    <!-- Supabase Integration -->
+    <script src="../supabase/supabase-client.js"></script>
+    <script src="../supabase/respuesta-service.js"></script>
+    <script src="../supabase/carta-service.js"></script>
+    <script src="../supabase/storage-service.js"></script>
+</body>
+</html>

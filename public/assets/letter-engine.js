@@ -8,7 +8,7 @@ class LetterEngine {
         this.currentLetter = null;
         this.dataPath = '../data/cartas.json';
         this.transitioning = false;
-        this.hearts = ["❤️","💕","💗","💞","💖"];
+        this.hearts = ["♡","♥","☾","✧","◦"];
         
         // Elementos del DOM
         this.elements = {};
@@ -63,23 +63,49 @@ class LetterEngine {
     }
 
     async loadLetterData() {
+        let data = null;
+        
         try {
-            const response = await fetch(this.dataPath);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // 1. Intentar cargar desde Supabase primero
+            if (window.cartaService && await this.trySupabaseConnection()) {
+                const supabaseLetters = await window.cartaService.getCartasActivas();
+                data = { cartas: supabaseLetters };
+                console.log('☁️ Datos cargados desde Supabase');
+            }
+            // 2. Fallback: Intentar cargar desde localStorage (datos del admin)  
+            else {
+                const savedData = localStorage.getItem('cartasData');
+                if (savedData) {
+                    data = JSON.parse(savedData);
+                    console.log('💾 Datos cargados desde localStorage (admin)');
+                } else {
+                    // 3. Fallback final: archivo JSON
+                    const response = await fetch(this.dataPath);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    data = await response.json();
+                    console.log('📄 Datos cargados desde archivo JSON');
+                }
             }
             
-            const data = await response.json();
+            // Asegurar estructura correcta
+            if (!data.cartas) data.cartas = [];
+            if (!data.configuracion) data.configuracion = {};
             
             // Determinar qué carta cargar
             const urlParams = new URLSearchParams(window.location.search);
             const letterId = urlParams.get('carta') || data.configuracion.cartaActual;
             
-            // Buscar la carta
-            this.currentLetter = data.cartas.find(carta => carta.id === letterId);
+            // Si no hay carta específica, usar la primera carta activa
+            this.currentLetter = data.cartas.find(carta => carta.id === letterId) || 
+                                data.cartas.find(carta => carta.activa) ||
+                                data.cartas[0];
             
             if (!this.currentLetter) {
-                throw new Error(`Carta no encontrada: ${letterId}`);
+                // Si no hay cartas, mostrar mensaje
+                this.showNoLettersMessage();
+                return;
             }
             
             // Renderizar la carta
@@ -88,6 +114,39 @@ class LetterEngine {
         } catch (error) {
             console.error('Error cargando datos de carta:', error);
             throw error;
+        }
+    }
+
+    async trySupabaseConnection() {
+        try {
+            // Verificar que Supabase y servicios estén disponibles
+            if (!window.supabaseClient || !window.cartaService) {
+                console.log('Supabase no disponible: Servicios no inicializados');
+                return false;
+            }
+            
+            // Esperar a que el cliente esté completamente inicializado
+            const client = await window.supabaseClient.getClient();
+            if (!client || !client.from) {
+                console.log('Supabase no disponible: Cliente no inicializado');
+                return false;
+            }
+            
+            // Verificar conexión realizando una consulta simple
+            const { data, error } = await client
+                .from('cartas')
+                .select('id')
+                .limit(1);
+            
+            if (error) {
+                console.log('Supabase no disponible:', error.message);
+                return false;
+            }
+            
+            return true;
+        } catch (error) {
+            console.log('Supabase no disponible:', error.message);
+            return false;
         }
     }
 
@@ -111,10 +170,10 @@ class LetterEngine {
             this.elements.photoBox.style.display = 'none';
         }
         
-        // Manejar audio
-        if (letter.audio) {
-            this.elements.bgMusic.src = letter.audio;
-        }
+        // Audio deshabilitado por ahora
+        // if (letter.audio) {
+        //     this.elements.bgMusic.src = letter.audio;
+        // }
         
         console.log(`Carta renderizada: ${letter.titulo}`);
     }
@@ -386,9 +445,59 @@ class LetterEngine {
         this.elements.errorScreen.style.display = 'flex';
     }
 
+    showNoLettersMessage() {
+        this.elements.loadingScreen.classList.add('hidden');
+        
+        // Crear mensaje de no hay cartas
+        const messageContainer = document.createElement('div');
+        messageContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f1ed, #ede5db);
+            color: #c4a882;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        `;
+        
+        messageContainer.innerHTML = `
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">💌 No hay cartas disponibles</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.8;">
+                Aún no se han creado cartas desde el panel de administración.
+            </p>
+            <a href="/admin" style="
+                background: linear-gradient(135deg, #c4a882, #a89073);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: transform 0.2s;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                📝 Ir al Panel de Administración
+            </a>
+        `;
+        
+        document.body.appendChild(messageContainer);
+    }
+
     // API pública para el panel de administración
     static async getAllLetters() {
         try {
+            // Intentar localStorage primero
+            const savedData = localStorage.getItem('cartasData');
+            if (savedData) {
+                return JSON.parse(savedData);
+            }
+            
+            // Fallback a archivo JSON
             const response = await fetch('../data/cartas.json');
             const data = await response.json();
             return data;

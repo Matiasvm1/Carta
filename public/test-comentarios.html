@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sistema de Comentarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f1ed;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 4px solid #c4a882;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        
+        button {
+            background: #c4a882;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #a89073;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .test-response-interface {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(245, 241, 237, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 4px solid rgba(196, 168, 130, 0.7);
+            transform: translateY(100%);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .test-response-interface.active {
+            transform: translateY(0);
+        }
+        
+        .test-response-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(196, 168, 130, 0.4);
+        }
+        
+        .test-response-close {
+            background: none;
+            border: none;
+            color: #a89073;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .test-response-close:hover {
+            background: rgba(196, 168, 130, 0.2);
+            color: #c4a882;
+        }
+        
+        .test-response-content {
+            padding: 20px;
+        }
+        
+        .carta-preview {
+            background: rgba(196, 168, 130, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(196, 168, 130, 0.3);
+        }
+        
+        .response-form {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test - Sistema de Comentarios</h1>
+    <p>Esta página prueba la integración completa del sistema de comentarios/respuestas.</p>
+
+    <div class="test-section">
+        <h2>1. Verificación de Scripts</h2>
+        <div id="script-status"></div>
+        <button onclick="checkScripts()">Verificar Scripts</button>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Conexión Supabase</h2>
+        <div id="supabase-status"></div>
+        <button onclick="testSupabaseConnection()">Probar Conexión</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Cargar Cartas Existentes</h2>
+        <div id="cartas-status"></div>
+        <button onclick="loadCartas()">Cargar Cartas</button>
+        <select id="carta-selector" style="display: none;">
+            <option value="">Selecciona una carta para probar respuestas</option>
+        </select>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Probar Sistema de Respuestas</h2>
+        <div id="response-status"></div>
+        <button onclick="openResponseInterface()">Abrir Interfaz de Respuesta</button>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Debug - localStorage</h2>
+        <div id="localStorage-status"></div>
+        <button onclick="showLocalStorage()">Ver localStorage</button>
+        <button onclick="clearLocalStorage()">Limpiar localStorage</button>
+    </div>
+
+    <!-- INTERFAZ DE RESPUESTA DE PRUEBA -->
+    <div id="test-response-interface" class="test-response-interface">
+        <div class="test-response-header">
+            <h3 style="color: #c4a882; margin: 0;">💕 Responder a la carta</h3>
+            <button class="test-response-close" onclick="closeResponseInterface()">×</button>
+        </div>
+        <div class="test-response-content">
+            <div id="carta-preview" class="carta-preview" style="display: none;"></div>
+            <div class="response-form">
+                <label for="test-response-text" style="display: block; margin-bottom: 10px; font-weight: bold;">Tu respuesta:</label>
+                <textarea id="test-response-text" placeholder="Escribe tu respuesta aquí..."></textarea>
+                <button onclick="sendTestResponse()" style="width: 100%; margin-top: 10px;">Enviar Respuesta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DE SUPABASE -->
+    <script src="supabase/supabase-client.js"></script>
+    <script src="supabase/carta-service.js"></script>
+    <script src="supabase/respuesta-service.js"></script>
+    <script src="supabase/storage-service.js"></script>
+
+    <!-- SCRIPTS DE CONVERSACIÓN -->
+    <script src="assets/conversation-engine.js"></script>
+    <script src="assets/response-interface.js"></script>
+    
+    <!-- SCRIPT DE VERIFICACIÓN AUTOMÁTICA -->
+    <script src="assets/verify-comments.js"></script>
+
+    <script>
+        let cartasData = [];
+        let selectedCarta = null;
+
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function checkScripts() {
+            const scripts = [
+                { name: 'supabaseClient', obj: window.supabaseClient },
+                { name: 'cartaService', obj: window.cartaService },
+                { name: 'respuestaService', obj: window.respuestaService },
+                { name: 'conversationEngine', obj: window.conversationEngine },
+                { name: 'ResponseInterface', obj: window.ResponseInterface }
+            ];
+
+            let html = '';
+            let allOk = true;
+
+            scripts.forEach(script => {
+                const status = script.obj ? '✅ Cargado' : '❌ No encontrado';
+                const type = script.obj ? 'success' : 'error';
+                html += `<div class="status ${type}">${script.name}: ${status}</div>`;
+                if (!script.obj) allOk = false;
+            });
+
+            showStatus('script-status', html);
+            
+            if (allOk) {
+                showStatus('script-status', html + '<div class="status success">🎉 Todos los scripts están cargados correctamente</div>');
+            }
+        }
+
+        async function testSupabaseConnection() {
+            try {
+                if (!window.supabaseClient) {
+                    showStatus('supabase-status', '❌ supabaseClient no está disponible', 'error');
+                    return;
+                }
+
+                showStatus('supabase-status', '🔄 Probando conexión...', 'info');
+                
+                const isConnected = await window.supabaseClient.testConnection();
+                
+                if (isConnected) {
+                    showStatus('supabase-status', '✅ Conexión a Supabase exitosa', 'success');
+                } else {
+                    showStatus('supabase-status', '⚠️ No se pudo conectar a Supabase', 'warning');
+                }
+            } catch (error) {
+                showStatus('supabase-status', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadCartas() {
+            try {
+                showStatus('cartas-status', '🔄 Cargando cartas...', 'info');
+
+                if (window.cartaService) {
+                    cartasData = await window.cartaService.getAllCartas();
+                } else {
+                    throw new Error('cartaService no disponible');
+                }
+
+                if (cartasData && cartasData.length > 0) {
+                    showStatus('cartas-status', `✅ ${cartasData.length} cartas cargadas`, 'success');
+                    
+                    // Llenar selector
+                    const selector = document.getElementById('carta-selector');
+                    selector.innerHTML = '<option value="">Selecciona una carta para probar respuestas</option>';
+                    cartasData.forEach(carta => {
+                        const option = document.createElement('option');
+                        option.value = carta.id;
+                        option.textContent = `${carta.titulo} (ID: ${carta.id})`;
+                        selector.appendChild(option);
+                    });
+                    selector.style.display = 'block';
+                    
+                    selector.onchange = function() {
+                        selectedCarta = cartasData.find(c => c.id == this.value);
+                        if (selectedCarta) {
+                            showStatus('cartas-status', `✅ Carta seleccionada: "${selectedCarta.titulo}"`, 'success');
+                        }
+                    };
+                } else {
+                    showStatus('cartas-status', '⚠️ No se encontraron cartas en Supabase', 'warning');
+                }
+            } catch (error) {
+                showStatus('cartas-status', `❌ Error cargando cartas: ${error.message}`, 'error');
+            }
+        }
+
+        function openResponseInterface() {
+            if (!selectedCarta) {
+                showStatus('response-status', '⚠️ Primero selecciona una carta', 'warning');
+                return;
+            }
+
+            // Mostrar vista previa de la carta
+            document.getElementById('carta-preview').innerHTML = `
+                <h4>${selectedCarta.titulo}</h4>
+                <p>${selectedCarta.cuerpo.substring(0, 200)}...</p>
+                <small>Fecha: ${new Date(selectedCarta.fecha).toLocaleDateString('es-ES')}</small>
+            `;
+            document.getElementById('carta-preview').style.display = 'block';
+
+            // Mostrar interfaz
+            document.getElementById('test-response-interface').classList.add('active');
+            showStatus('response-status', '✅ Interfaz de respuesta abierta', 'success');
+        }
+
+        function closeResponseInterface() {
+            document.getElementById('test-response-interface').classList.remove('active');
+        }
+
+        async function sendTestResponse() {
+            const responseText = document.getElementById('test-response-text').value.trim();
+            
+            if (!responseText) {
+                alert('Por favor escribe una respuesta');
+                return;
+            }
+
+            if (!selectedCarta) {
+                alert('No hay carta seleccionada');
+                return;
+            }
+
+            try {
+                showStatus('response-status', '🔄 Enviando respuesta...', 'info');
+
+                // Probar con respuestaService directamente
+                const respuesta = await window.respuestaService.crearRespuesta({
+                    carta_id: selectedCarta.id,
+                    mensaje: responseText,
+                    autor: 'Jimena (Test)'
+                });
+
+                if (respuesta) {
+                    showStatus('response-status', `✅ Respuesta creada exitosamente! ID: ${respuesta.id}`, 'success');
+                    document.getElementById('test-response-text').value = '';
+                    closeResponseInterface();
+
+                    // Verificar que se guardó
+                    setTimeout(async () => {
+                        try {
+                            const respuestas = await window.respuestaService.obtenerRespuestasPorCarta(selectedCarta.id);
+                            showStatus('response-status', 
+                                `✅ Verificación: ${respuestas.length} respuesta(s) en la base de datos para esta carta`, 
+                                'success'
+                            );
+                        } catch (error) {
+                            showStatus('response-status', `⚠️ Error verificando: ${error.message}`, 'warning');
+                        }
+                    }, 1000);
+                } else {
+                    throw new Error('No se recibió confirmación del servidor');
+                }
+
+            } catch (error) {
+                showStatus('response-status', `❌ Error enviando respuesta: ${error.message}`, 'error');
+            }
+        }
+
+        function showLocalStorage() {
+            const data = {
+                cartas_conversations_cache: localStorage.getItem('cartas_conversations_cache'),
+                cartas_local_data: localStorage.getItem('cartas_local_data'),
+                // Otros datos relevantes
+            };
+
+            let html = '<h4>Contenido de localStorage:</h4>';
+            
+            for (const [key, value] of Object.entries(data)) {
+                if (value) {
+                    html += `<strong>${key}:</strong><pre>${JSON.stringify(JSON.parse(value), null, 2)}</pre>`;
+                } else {
+                    html += `<div class="status info">${key}: (vacío)</div>`;
+                }
+            }
+
+            showStatus('localStorage-status', html);
+        }
+
+        function clearLocalStorage() {
+            if (confirm('¿Estás seguro de que quieres limpiar el localStorage?')) {
+                localStorage.removeItem('cartas_conversations_cache');
+                localStorage.removeItem('cartas_local_data');
+                showStatus('localStorage-status', '✅ localStorage limpiado', 'success');
+            }
+        }
+
+        // Auto-verificar al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkScripts();
+            }, 1000);
+        });
+
+        // Debug global
+        window.testDebug = {
+            cartasData,
+            selectedCarta,
+            checkScripts,
+            testSupabaseConnection,
+            loadCartas
+        };
+    </script>
+</body>
+</html>

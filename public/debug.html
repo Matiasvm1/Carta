@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Diagnóstico Supabase</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Diagnóstico de Integración Supabase</h1>
+    
+    <div class="test-section">
+        <h3>1. Verificación de Scripts</h3>
+        <div id="scripts-status"></div>
+        <button onclick="checkScripts()">Verificar Scripts</button>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Conexión a Supabase</h3>
+        <div id="connection-status"></div>
+        <button onclick="testConnection()">Probar Conexión</button>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Verificar Tablas</h3>
+        <div id="tables-status"></div>
+        <button onclick="checkTables()">Verificar Tablas</button>
+    </div>
+
+    <div class="test-section">
+        <h3>4. Crear Carta de Prueba</h3>
+        <div id="carta-status"></div>
+        <button onclick="createTestLetter()">Crear Carta Test</button>
+    </div>
+
+    <div class="test-section">
+        <h3>5. Crear Respuesta de Prueba</h3>
+        <div id="respuesta-status"></div>
+        <button onclick="createTestResponse()">Crear Respuesta Test</button>
+    </div>
+
+    <div class="test-section">
+        <h3>6. Logs de Consola</h3>
+        <pre id="console-logs"></pre>
+        <button onclick="clearLogs()">Limpiar Logs</button>
+    </div>
+
+    <!-- Cargar scripts de Supabase -->
+    <script src="../supabase/supabase-client.js"></script>
+    <script src="../supabase/carta-service.js"></script>
+    <script src="../supabase/respuesta-service.js"></script>
+    <script src="../supabase/storage-service.js"></script>
+
+    <script>
+        // Capturar logs de consola
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        let logs = [];
+
+        function captureLog(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push(`[${timestamp}] ${type.toUpperCase()}: ${args.join(' ')}`);
+            updateLogDisplay();
+            
+            // Llamar al método original
+            if (type === 'log') originalLog(...args);
+            else if (type === 'error') originalError(...args);
+            else if (type === 'warn') originalWarn(...args);
+        }
+
+        console.log = (...args) => captureLog('log', ...args);
+        console.error = (...args) => captureLog('error', ...args);
+        console.warn = (...args) => captureLog('warn', ...args);
+
+        function updateLogDisplay() {
+            document.getElementById('console-logs').textContent = logs.slice(-20).join('\n');
+        }
+
+        function clearLogs() {
+            logs = [];
+            updateLogDisplay();
+        }
+
+        function showStatus(elementId, type, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function checkScripts() {
+            const checks = [
+                { name: 'Supabase Client', exists: !!window.supabaseClient },
+                { name: 'Carta Service', exists: !!window.cartaService },
+                { name: 'Respuesta Service', exists: !!window.respuestaService },
+                { name: 'Storage Service', exists: !!window.storageService }
+            ];
+
+            let html = '';
+            let allGood = true;
+
+            checks.forEach(check => {
+                if (check.exists) {
+                    html += `<div class="success">✅ ${check.name} - Cargado</div>`;
+                } else {
+                    html += `<div class="error">❌ ${check.name} - No encontrado</div>`;
+                    allGood = false;
+                }
+            });
+
+            if (allGood) {
+                html += '<div class="success">🎉 Todos los scripts están cargados correctamente</div>';
+            }
+
+            showStatus('scripts-status', '', html);
+        }
+
+        async function testConnection() {
+            try {
+                showStatus('connection-status', 'info', '🔄 Probando conexión...');
+                
+                if (!window.supabaseClient) {
+                    throw new Error('supabaseClient no está disponible');
+                }
+
+                const client = await window.supabaseClient.getClient();
+                console.log('Cliente Supabase obtenido:', !!client);
+
+                // Probar una consulta simple
+                const { data, error } = await client
+                    .from('cartas')
+                    .select('id')
+                    .limit(1);
+
+                if (error) {
+                    throw error;
+                }
+
+                showStatus('connection-status', 'success', '✅ Conexión exitosa a Supabase. Tablas encontradas.');
+                
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                showStatus('connection-status', 'error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        async function checkTables() {
+            try {
+                showStatus('tables-status', 'info', '🔄 Verificando tablas...');
+                
+                const client = await window.supabaseClient.getClient();
+                
+                // Verificar tabla cartas
+                const { data: cartasData, error: cartasError } = await client
+                    .from('cartas')
+                    .select('count', { count: 'exact', head: true });
+
+                // Verificar tabla respuestas  
+                const { data: respuestasData, error: respuestasError } = await client
+                    .from('respuestas')
+                    .select('count', { count: 'exact', head: true });
+
+                let html = '';
+                
+                if (!cartasError) {
+                    html += `<div class="success">✅ Tabla 'cartas' - ${cartasData?.count || 0} registros</div>`;
+                } else {
+                    html += `<div class="error">❌ Tabla 'cartas' - Error: ${cartasError.message}</div>`;
+                }
+
+                if (!respuestasError) {
+                    html += `<div class="success">✅ Tabla 'respuestas' - ${respuestasData?.count || 0} registros</div>`;
+                } else {
+                    html += `<div class="error">❌ Tabla 'respuestas' - Error: ${respuestasError.message}</div>`;
+                }
+
+                showStatus('tables-status', '', html);
+                
+            } catch (error) {
+                console.error('Error verificando tablas:', error);
+                showStatus('tables-status', 'error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        async function createTestLetter() {
+            try {
+                showStatus('carta-status', 'info', '🔄 Creando carta de prueba...');
+                
+                if (!window.cartaService) {
+                    throw new Error('cartaService no disponible');
+                }
+
+                const testCarta = {
+                    titulo: 'Carta de Prueba',
+                    cuerpo: 'Esta es una carta de prueba para verificar la integración con Supabase.',
+                    destinatario: 'Jimena',
+                    remitente: 'Sistema de Prueba',
+                    activa: true,
+                    tema_color: 'beige'
+                };
+
+                const result = await window.cartaService.crearCarta(testCarta);
+                
+                if (result && !result.error) {
+                    showStatus('carta-status', 'success', `✅ Carta creada exitosamente. ID: ${result.id}`);
+                } else {
+                    throw new Error(result?.error?.message || 'Error desconocido');
+                }
+                
+            } catch (error) {
+                console.error('Error creando carta:', error);
+                showStatus('carta-status', 'error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        async function createTestResponse() {
+            try {
+                showStatus('respuesta-status', 'info', '🔄 Creando respuesta de prueba...');
+                
+                if (!window.respuestaService) {
+                    throw new Error('respuestaService no disponible');
+                }
+
+                // Primero obtener una carta existente
+                const cartas = await window.cartaService.getCartasActivas();
+                if (!cartas || cartas.length === 0) {
+                    throw new Error('No hay cartas disponibles. Crea una carta primero.');
+                }
+
+                const cartaId = cartas[0].id;
+
+                const testRespuesta = {
+                    carta_id: cartaId,
+                    contenido: 'Esta es una respuesta de prueba desde el diagnóstico.',
+                    autor: 'Sistema de Prueba'
+                };
+
+                const result = await window.respuestaService.crearRespuesta(testRespuesta);
+                
+                if (result && !result.error) {
+                    showStatus('respuesta-status', 'success', `✅ Respuesta creada exitosamente. ID: ${result.id}`);
+                } else {
+                    throw new Error(result?.error?.message || 'Error desconocido');
+                }
+                
+            } catch (error) {
+                console.error('Error creando respuesta:', error);
+                showStatus('respuesta-status', 'error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        // Auto-ejecutar verificación de scripts al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(checkScripts, 1000);
+        });
+    </script>
+</body>
+</html>

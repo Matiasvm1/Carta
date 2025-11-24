@@ -2,24 +2,63 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mis Cartas para Jimena 💕</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#f5f1ed">
+<title>Cartas</title>
 
 <style>
 :root {
   --light-intensity: 0.1;
+  
+  /* ===== FLUID TYPOGRAPHY MOBILE-FIRST ===== */
+  --font-xs: clamp(0.75rem, 2.5vw, 0.875rem);
+  --font-sm: clamp(0.875rem, 3vw, 1rem);
+  --font-base: clamp(1rem, 4vw, 1.125rem);
+  --font-md: clamp(1.125rem, 4.5vw, 1.25rem);
+  --font-lg: clamp(1.25rem, 5vw, 1.5rem);
+  --font-xl: clamp(1.5rem, 6vw, 2rem);
+  --font-2xl: clamp(2rem, 8vw, 2.5rem);
+  --font-3xl: clamp(2.5rem, 10vw, 3rem);
+  
+  /* ===== SPACING MOBILE-FIRST ===== */
+  --space-xs: clamp(0.25rem, 2vw, 0.5rem);
+  --space-sm: clamp(0.5rem, 3vw, 0.75rem);
+  --space-md: clamp(0.75rem, 4vw, 1rem);
+  --space-lg: clamp(1rem, 5vw, 1.5rem);
+  --space-xl: clamp(1.5rem, 6vw, 2rem);
+  --space-2xl: clamp(2rem, 8vw, 3rem);
+  
+  /* ===== TOUCH TARGETS ===== */
+  --touch-min: 44px;
+  --touch-comfortable: 48px;
+  --touch-generous: 56px;
+}
+
+/* ===== GLOBAL MOBILE OPTIMIZATIONS ===== */
+* {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(245, 241, 237, 0.3);
 }
 
 /* ===== FONDO MODERNO CON MOVIMIENTO ===== */
 body {
   margin: 0;
-  font-family: "Georgia", serif;
-  background: radial-gradient(circle at 20% 30%, #ffe0ef, #ffc8da, #ffb4d1, #f7a3c9);
+  font-family: -apple-system, BlinkMacSystemFont, "Georgia", serif;
+  font-size: var(--font-base);
+  line-height: 1.6;
+  background: radial-gradient(circle at 20% 30%, #f5f1ed, #ede5db, #e3ddd7, #d4c4b0);
   background-size: 170% 170%;
   animation: bgflow 18s ease-in-out infinite;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  padding: 0 var(--space-sm);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes bgflow {
@@ -32,10 +71,10 @@ body {
 .heart {
   position: fixed;
   bottom: -20px;
-  color: #ff6da8;
+  color: #a89073;
   font-size: 22px;
   animation: floatHearts 6s linear infinite;
-  opacity: 0.55;
+  opacity: 0.4;
   z-index: 0;
 }
 
@@ -58,37 +97,37 @@ body {
 .header {
   text-align: center;
   margin-bottom: 50px;
-  background: rgba(255,255,255,0.16);
+  background: rgba(245,241,237,0.3);
   backdrop-filter: blur(24px) saturate(180%);
   padding: 40px 30px;
   border-radius: 30px;
-  box-shadow: 0 25px 70px rgba(255,0,140,0.15);
+  box-shadow: 0 25px 70px rgba(196,168,130,0.25);
 }
 
 .header h1 {
   font-size: 3rem;
   margin-bottom: 15px;
-  color: #ff5fa5;
-  text-shadow: 0 0 20px rgba(255, 109, 168, 0.45);
+  color: #c4a882;
+  text-shadow: 0 0 20px rgba(196, 168, 130, 0.5);
   animation: softGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes softGlow {
-  0% { text-shadow: 0 0 15px rgba(255, 109, 168, 0.35); }
-  100% { text-shadow: 0 0 35px rgba(255, 109, 168, 0.9); }
+  0% { text-shadow: 0 0 15px rgba(196, 168, 130, 0.4); }
+  100% { text-shadow: 0 0 25px rgba(196, 168, 130, 0.75); }
 }
 
 .header p {
   font-size: 1.3rem;
-  color: #ff5fa5;
-  opacity: 0.8;
+  color: #a89073;
+  opacity: 0.85;
   margin-bottom: 25px;
 }
 
 .header .count {
   font-size: 1.1rem;
-  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
-  color: white;
+  background: linear-gradient(135deg, #c4a882, #a89073);
+  color: #f5f1ed;
   padding: 10px 20px;
   border-radius: 25px;
   display: inline-block;
@@ -104,13 +143,12 @@ body {
 }
 
 .letter-card {
-  background: rgba(255,255,255,0.16);
+  background: rgba(245,241,237,0.25);
   backdrop-filter: blur(24px) saturate(180%);
   border-radius: 25px;
   padding: 30px;
-  box-shadow: 0 20px 50px rgba(255,0,140,0.15);
+  box-shadow: 0 20px 50px rgba(196,168,130,0.2);
   transition: all 0.3s ease;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
 }
@@ -122,7 +160,7 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(255,154,208,0.1), transparent);
+  background: conic-gradient(from 0deg, transparent, rgba(212,196,176,0.15), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   animation: rotate 4s linear infinite;
@@ -134,7 +172,7 @@ body {
 
 .letter-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 30px 70px rgba(255,0,140,0.25);
+  box-shadow: 0 30px 70px rgba(196,168,130,0.35);
 }
 
 .letter-card:hover::before {
@@ -149,23 +187,61 @@ body {
 .letter-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 2px solid rgba(255, 95, 165, 0.2);
+  border-bottom: 2px solid rgba(196, 168, 130, 0.3);
+}
+
+.letter-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .letter-title {
   font-size: 1.5rem;
-  color: #ff5fa5;
+  color: #c4a882;
   margin: 0;
   font-weight: 700;
+  flex: 1;
+}
+
+.favorite-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  transform: scale(1);
+  z-index: 10;
+}
+
+.favorite-btn:hover {
+  opacity: 1;
+  transform: scale(1.2);
+  background: rgba(196, 168, 130, 0.1);
+}
+
+.favorite-btn.active {
+  opacity: 1;
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15); }
+  50% { transform: scale(1.3); }
+  75% { transform: scale(1.15); }
 }
 
 .letter-date {
   font-size: 0.9rem;
-  color: #ff8fbf;
-  background: rgba(255, 255, 255, 0.3);
+  color: #8b7355;
+  background: rgba(245, 241, 237, 0.4);
   padding: 5px 12px;
   border-radius: 15px;
 }
@@ -180,6 +256,15 @@ body {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   text-align: justify;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px -10px 20px -10px;
+}
+
+.letter-preview:hover {
+  background: rgba(196, 168, 130, 0.1);
 }
 
 .letter-footer {
@@ -189,11 +274,11 @@ body {
 }
 
 .read-btn {
-  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  background: linear-gradient(135deg, #c4a882, #a89073);
   border: none;
   padding: 12px 25px;
   border-radius: 25px;
-  color: white;
+  color: #f5f1ed;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -205,12 +290,12 @@ body {
 
 .read-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 154, 208, 0.4);
+  box-shadow: 0 10px 25px rgba(196, 168, 130, 0.4);
 }
 
 .letter-status {
   font-size: 0.9rem;
-  color: #ff5fa5;
+  color: #a89073;
   font-weight: 600;
 }
 
@@ -218,21 +303,21 @@ body {
 .empty-state {
   text-align: center;
   padding: 80px 20px;
-  background: rgba(255,255,255,0.16);
+  background: rgba(245,241,237,0.25);
   backdrop-filter: blur(24px) saturate(180%);
   border-radius: 30px;
-  box-shadow: 0 25px 70px rgba(255,0,140,0.15);
+  box-shadow: 0 25px 70px rgba(196,168,130,0.2);
 }
 
 .empty-state h2 {
   font-size: 2.2rem;
-  color: #ff5fa5;
+  color: #c4a882;
   margin-bottom: 20px;
 }
 
 .empty-state p {
   font-size: 1.2rem;
-  color: #ff8fbf;
+  color: #a89073;
   margin-bottom: 30px;
 }
 
@@ -257,11 +342,11 @@ body {
 }
 
 .filter-btn {
-  background: rgba(255, 255, 255, 0.3);
-  border: 2px solid rgba(255, 154, 208, 0.3);
+  background: rgba(245, 241, 237, 0.4);
+  border: 2px solid rgba(196, 168, 130, 0.4);
   padding: 10px 20px;
   border-radius: 25px;
-  color: #ff5fa5;
+  color: #8b7355;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -269,8 +354,8 @@ body {
 
 .filter-btn.active,
 .filter-btn:hover {
-  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
-  color: white;
+  background: linear-gradient(135deg, #c4a882, #a89073);
+  color: #f5f1ed;
   border-color: transparent;
   transform: translateY(-2px);
 }
@@ -279,7 +364,7 @@ body {
 .loading {
   text-align: center;
   padding: 60px 20px;
-  color: #ff5fa5;
+  color: #c4a882;
 }
 
 .loading-heart {
@@ -301,12 +386,12 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff9ad0, #ff76ae);
+  background: linear-gradient(135deg, #c4a882, #a89073);
   border: none;
-  color: white;
+  color: #f5f1ed;
   font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(255, 154, 208, 0.4);
+  box-shadow: 0 10px 30px rgba(196, 168, 130, 0.4);
   transition: all 0.3s ease;
   z-index: 100;
   display: flex;
@@ -316,49 +401,107 @@ body {
 
 .create-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 15px 40px rgba(255, 154, 208, 0.6);
+  box-shadow: 0 15px 40px rgba(196, 168, 130, 0.5);
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .container {
-    padding: 15px;
+    padding: 18px;
+    margin: 0 8px;
   }
   
   .header h1 {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
+    margin-bottom: 12px;
   }
   
   .header p {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
+    margin-bottom: 20px;
   }
   
   .letters-gallery {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 22px;
   }
   
   .letter-card {
-    padding: 20px;
+    padding: 22px;
+    margin: 0 auto;
+    max-width: 450px;
   }
   
   .filters {
-    gap: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .filter-btn {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 15px 10px;
+    margin: 0 5px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+  
+  .header p {
+    font-size: 1.2rem;
+  }
+  
+  .letters-gallery {
+    gap: 18px;
+  }
+  
+  .letter-card {
+    padding: 18px;
+    max-width: 100%;
+  }
+  
+  .header .count {
+    font-size: 1.05rem;
+    padding: 10px 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .header p {
+    font-size: 1.15rem;
+  }
+  
+  .letter-card {
+    padding: 16px;
   }
 }
 </style>
+<!-- MOBILE PERFORMANCE OPTIMIZER -->
+<script src="assets/mobile-performance.js"></script>
+
+<!-- SUPABASE INTEGRATION - CARGAR PRIMERO -->
+<script src="../supabase/supabase-client.js"></script>
+<script src="../supabase/carta-service.js"></script>
+<script src="../supabase/respuesta-service.js"></script>
 </head>
 
 <body>
 
 <!-- CORAZONES DE FONDO -->
 <script>
-const hearts=["❤️","💕","💗","💞","💖"];
+const hearts=["♡","♥","☾","✧","◦"];
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="heart";
@@ -373,24 +516,24 @@ setInterval(()=>{
 <div class="container">
   <!-- HEADER -->
   <div class="header">
-    <h1>💕 Mis Cartas para Jimena</h1>
+    <h1>Flaquita</h1>
     <p>Cada carta es un pedacito de mi corazón para vos</p>
     <div class="count" id="letterCount">
-      <span id="countNumber">0</span> cartas de amor escritas
+      pedacitos: <span id="countNumber">0</span> 
     </div>
   </div>
 
   <!-- FILTROS -->
   <div class="filters" id="filters">
-    <button class="filter-btn active" onclick="filterLetters('all')">📝 Todas las Cartas</button>
-    <button class="filter-btn" onclick="filterLetters('recent')">✨ Recientes</button>
-    <button class="filter-btn" onclick="filterLetters('favorites')">💖 Favoritas</button>
+    <button class="filter-btn active" onclick="filterLetters('all')">Todas las Cartas</button>
+    <button class="filter-btn" onclick="filterLetters('recent')">Recientes</button>
+    <button class="filter-btn" onclick="filterLetters('favorites')">Favoritas</button>
   </div>
 
   <!-- LOADING -->
   <div class="loading" id="loading">
-    <div class="loading-heart">💕</div>
-    <p>Cargando tus cartas de amor...</p>
+    <div class="loading-heart"></div>
+    <p>Cargando tus cartas..</p>
   </div>
 
   <!-- GALERÍA DE CARTAS -->
@@ -402,29 +545,82 @@ setInterval(()=>{
   <div class="empty-state" id="emptyState" style="display: none;">
     <div class="empty-heart">💔</div>
     <h2>Aún no hay cartas</h2>
-    <p>Pronto habrá hermosas cartas de amor aquí para vos, Jime 💕</p>
+    <p>Pronto habrá hermosas cartas..</p>
   </div>
 </div>
 
 <!-- BOTÓN FLOTANTE PARA IR AL ADMIN -->
-<button class="create-btn" onclick="goToAdmin()" title="Ir al panel de administración">
-  ⚙️
-</button>
+
 
 <script>
 let allLetters = [];
 let currentFilter = 'all';
 
-// Cargar cartas desde el JSON
+// Cargar cartas desde Supabase, localStorage o JSON
 async function loadLetters() {
   try {
-    const response = await fetch('../data/cartas.json');
-    const data = await response.json();
+    let cartas = [];
+    let dataSource = 'none';
     
-    // Filtrar solo cartas activas y ordenar por fecha (más recientes primero)
-    allLetters = data.cartas
+    // 🚀 1. ESPERAR Y INTENTAR SUPABASE PRIMERO
+    console.log('🔍 Intentando conectar con Supabase...');
+    
+    // Esperar un momento para que se carguen los scripts de Supabase
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    if (window.cartaService) {
+      try {
+        // Intentar obtener cartas de Supabase
+        cartas = await window.cartaService.getCartasActivas();
+        if (cartas && cartas.length >= 0) {
+          dataSource = 'supabase';
+          console.log('🎯 Galería: Cartas cargadas desde Supabase');
+          showNotification('✅ Conectado a Supabase - Datos en tiempo real', 'success');
+          
+          // Configurar tiempo real para actualizaciones automáticas
+          setupGalleryRealtime();
+        }
+      } catch (supabaseError) {
+        console.log('❌ Error conectando con Supabase:', supabaseError);
+      }
+    } else {
+      console.log('⚠️ cartaService no disponible');
+    }
+    
+    // 💾 2. FALLBACK A LOCALSTORAGE solo si Supabase falló
+    if (dataSource === 'none') {
+      const savedData = localStorage.getItem('cartasData');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        cartas = (data.cartas || []).filter(carta => carta.activa);
+        dataSource = 'localStorage';
+        console.log('💾 Galería: Datos cargados desde localStorage');
+        showNotification('📱 Modo offline - Usando datos locales', 'warning');
+      }
+    }
+    
+    // 📄 3. FALLBACK A ARCHIVO JSON como último recurso
+    if (dataSource === 'none') {
+      try {
+        const response = await fetch('../data/cartas.json');
+        if (response.ok) {
+          const data = await response.json();
+          cartas = (data.cartas || []).filter(carta => carta.activa);
+          dataSource = 'json';
+          console.log('📄 Galería: Datos cargados desde archivo JSON');
+          showNotification('📄 Usando datos de respaldo', 'info');
+        }
+      } catch (jsonError) {
+        console.error('Error cargando JSON:', jsonError);
+      }
+    }
+    
+    // Filtrar y ordenar cartas activas
+    allLetters = cartas
       .filter(carta => carta.activa)
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+      .sort((a, b) => new Date(b.fecha || b.created_at) - new Date(a.fecha || a.created_at));
+    
+    console.log(`📊 Total de cartas cargadas: ${allLetters.length} (Fuente: ${dataSource})`);
     
     updateLetterCount();
     renderLetters();
@@ -432,10 +628,45 @@ async function loadLetters() {
   } catch (error) {
     console.error('Error cargando cartas:', error);
     showEmptyState();
+    showNotification('❌ Error cargando cartas', 'error');
   }
   
   // Ocultar loading
   document.getElementById('loading').style.display = 'none';
+}
+
+// 🔗 Probar conexión a Supabase
+async function trySupabaseConnection() {
+  try {
+    if (window.supabaseClient && window.cartaService) {
+      // Intentar una operación simple para verificar conexión
+      const test = await window.cartaService.getCartasActivas();
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.log('Supabase no disponible en galería:', error);
+    return false;
+  }
+}
+
+// 🔄 Configurar actualizaciones en tiempo real para galería
+async function setupGalleryRealtime() {
+  try {
+    if (window.cartaService) {
+      await window.cartaService.setupRealtimeCartas((payload) => {
+        console.log('📡 Galería: Actualización en tiempo real');
+        
+        // Recargar cartas cuando hay cambios
+        if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE' || payload.eventType === 'DELETE') {
+          setTimeout(() => loadLetters(), 1000); // Delay para evitar spam
+        }
+      });
+      console.log('🔄 Galería: Tiempo real configurado');
+    }
+  } catch (error) {
+    console.error('Error configurando tiempo real en galería:', error);
+  }
 }
 
 // Actualizar contador de cartas
@@ -465,20 +696,27 @@ function renderLetters() {
     `;
   } else {
     gallery.innerHTML = filteredLetters.map(carta => `
-      <div class="letter-card" onclick="openLetter('${carta.id}')">
+      <div class="letter-card">
         <div class="letter-content">
           <div class="letter-header">
             <h3 class="letter-title">${carta.titulo}</h3>
-            <span class="letter-date">${formatDate(carta.fecha)}</span>
+            <div class="letter-header-right">
+              <button class="favorite-btn ${isFavorite(carta.id) ? 'active' : ''}" 
+                      onclick="toggleFavorite('${carta.id}', event)" 
+                      title="${isFavorite(carta.id) ? 'Quitar de favoritas' : 'Marcar como favorita'}">
+                ${isFavorite(carta.id) ? '💖' : '🤍'}
+              </button>
+              <span class="letter-date">${formatDate(carta.fecha)}</span>
+            </div>
           </div>
-          <div class="letter-preview">
+          <div class="letter-preview" onclick="openLetter('${carta.id}')">
             ${stripHtml(carta.cuerpo)}
           </div>
           <div class="letter-footer">
-            <button class="read-btn">
-              💌 Leer carta completa
+            <button class="read-btn" onclick="openLetter('${carta.id}')">
+              Leer
             </button>
-            <span class="letter-status">Para mi Jime 💕</span>
+            <span class="letter-status"></span>
           </div>
         </div>
       </div>
@@ -505,9 +743,9 @@ function filterLettersByType(letters) {
       return letters.filter(carta => new Date(carta.fecha) >= thirtyDaysAgo);
       
     case 'favorites':
-      // Por ahora, las cartas con foto se consideran "favoritas"
-      // En el futuro se puede agregar un campo específico
-      return letters.filter(carta => carta.foto);
+      // Filtrar cartas marcadas como favoritas por Jimena
+      const favorites = getFavorites();
+      return letters.filter(carta => favorites.includes(carta.id));
       
     case 'all':
     default:
@@ -554,7 +792,7 @@ function openLetter(letterId) {
 
 // Ir al panel de administración
 function goToAdmin() {
-  const password = prompt('💕 Ingresá la contraseña de admin para crear nuevas cartas:');
+  const password = prompt('Ingresá la contraseña de admin para crear nuevas cartas:');
   if (password) {
     // Guardar contraseña temporalmente para auto-login
     sessionStorage.setItem('adminPassword', password);
@@ -562,9 +800,108 @@ function goToAdmin() {
   }
 }
 
+// === SISTEMA DE FAVORITOS ===
+// Obtener favoritos de localStorage
+function getFavorites() {
+  const favorites = localStorage.getItem('jimena-favorites');
+  return favorites ? JSON.parse(favorites) : [];
+}
+
+// Guardar favoritos en localStorage
+function saveFavorites(favorites) {
+  localStorage.setItem('jimena-favorites', JSON.stringify(favorites));
+}
+
+// Verificar si una carta es favorita
+function isFavorite(cartaId) {
+  const favorites = getFavorites();
+  return favorites.includes(cartaId);
+}
+
+// Alternar estado de favorito
+function toggleFavorite(cartaId, event) {
+  event.stopPropagation(); // Evitar que se abra la carta
+  
+  let favorites = getFavorites();
+  const isFav = favorites.includes(cartaId);
+  
+  if (isFav) {
+    // Quitar de favoritos
+    favorites = favorites.filter(id => id !== cartaId);
+    showNotification('Carta quitada de favoritas 🤍', 'info');
+  } else {
+    // Agregar a favoritos
+    favorites.push(cartaId);
+    showNotification('¡Carta agregada a favoritas! 💖', 'success');
+  }
+  
+  saveFavorites(favorites);
+  
+  // Re-renderizar si estamos viendo favoritas
+  if (currentFilter === 'favorites') {
+    renderLetters();
+  } else {
+    // Solo actualizar el botón
+    const btn = event.target;
+    if (isFav) {
+      btn.innerHTML = '🤍';
+      btn.classList.remove('active');
+      btn.title = 'Marcar como favorita';
+    } else {
+      btn.innerHTML = '💖';
+      btn.classList.add('active');
+      btn.title = 'Quitar de favoritas';
+    }
+  }
+}
+
+// Mostrar notificación
+function showNotification(message, type = 'info') {
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? 'rgba(196, 168, 130, 0.95)' : 'rgba(168, 144, 115, 0.95)'};
+    color: #f5f1ed;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(196, 168, 130, 0.3);
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+    max-width: 300px;
+  `;
+  
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  // Animar entrada
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Auto-remover
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentElement) {
+        notification.remove();
+      }
+    }, 500);
+  }, 3000);
+}
+
 // Inicializar al cargar
 document.addEventListener('DOMContentLoaded', () => {
-  loadLetters();
+  // Esperar un poco más para asegurar que Supabase esté listo
+  setTimeout(() => {
+    loadLetters();
+  }, 200);
 });
 
 // Recargar cada 5 minutos para detectar cartas nuevas

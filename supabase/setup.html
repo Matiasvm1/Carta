@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Configurar Supabase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f1ed, #ede5db);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            background: rgba(245, 241, 237, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(196, 168, 130, 0.2);
+            border: 1px solid rgba(196, 168, 130, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #c4a882;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #a89073;
+            font-size: 1.1rem;
+        }
+        
+        .step {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #c4a882;
+        }
+        
+        .step h3 {
+            color: #c4a882;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .step p, .step li {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .step ol {
+            margin-left: 20px;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .highlight strong {
+            color: #856404;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #c4a882, #a89073);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(196, 168, 130, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Configurar Supabase</h1>
+            <p>Configuración rápida para persistencia permanente en la nube</p>
+        </div>
+        
+        <div class="step">
+            <h3>📝 Paso 1: Crear cuenta Supabase (2 minutos)</h3>
+            <ol>
+                <li>Ve a <strong>https://supabase.com</strong></li>
+                <li>Haz clic en <strong>"Start your project"</strong></li>
+                <li>Crea cuenta con GitHub o email</li>
+                <li>Crear nuevo proyecto: <strong>"cartas-jimena"</strong></li>
+                <li>Esperar 2 minutos a que se configure</li>
+            </ol>
+            <a href="https://supabase.com" target="_blank" class="btn btn-info">Abrir Supabase</a>
+        </div>
+        
+        <div class="step">
+            <h3>🗄️ Paso 2: Configurar Base de Datos (1 minuto)</h3>
+            <p>En tu proyecto Supabase, ve a <strong>SQL Editor</strong> y ejecuta:</p>
+            <div class="code-block">-- Tabla de cartas
+CREATE TABLE cartas (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  titulo TEXT NOT NULL,
+  destinatario TEXT NOT NULL DEFAULT 'Jimena',
+  cuerpo TEXT NOT NULL,
+  foto TEXT,
+  audio TEXT,
+  fecha DATE NOT NULL,
+  activa BOOLEAN DEFAULT false,
+  favorita BOOLEAN DEFAULT false,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Tabla de respuestas
+CREATE TABLE respuestas (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  carta_id UUID REFERENCES cartas(id) ON DELETE CASCADE,
+  contenido TEXT NOT NULL,
+  tipo TEXT DEFAULT 'texto',
+  usuario TEXT DEFAULT 'Jimena',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Storage para fotos
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('cartas-media', 'cartas-media', true);</div>
+        </div>
+        
+        <div class="step">
+            <h3>🔐 Paso 3: Configurar Credenciales (30 segundos)</h3>
+            <p>En Supabase, ve a <strong>Settings → API</strong> y copia:</p>
+            <ol>
+                <li><strong>Project URL</strong> (https://xxx.supabase.co)</li>
+                <li><strong>Anon public key</strong> (eyJhbGciOiJIUzI1NiIs...)</li>
+                <li>Pegar en <code>supabase/supabase-client.js</code></li>
+            </ol>
+            
+            <div class="highlight">
+                <strong>📁 Archivo a editar:</strong> <code>supabase/supabase-client.js</code>
+                <br><br>
+                Reemplazar:<br>
+                • <code>TU_SUPABASE_URL</code> → Tu Project URL<br>
+                • <code>TU_SUPABASE_ANON_KEY</code> → Tu Anon Key
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>✨ Paso 4: ¡Listo! Beneficios</h3>
+            <p><strong>Una vez configurado tendrás:</strong></p>
+            <ul>
+                <li>✅ <strong>Persistencia permanente</strong> - Datos nunca se pierden</li>
+                <li>✅ <strong>Sincronización multi-dispositivo</strong> - Tu PC, móvil de Jimena, etc.</li>
+                <li>✅ <strong>Fotos en la nube</strong> - Sin límites de localStorage</li>
+                <li>✅ <strong>Tiempo real</strong> - Cambios instantáneos</li>
+                <li>✅ <strong>Respuestas permanentes</strong> - Jimena puede responder desde cualquier lugar</li>
+                <li>✅ <strong>Backup automático</strong> - Supabase se encarga de todo</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="../admin/" class="btn btn-success">🚀 Ir al Admin</a>
+            <a href="../" class="btn">🏠 Volver a Inicio</a>
+        </div>
+        
+        <div class="highlight" style="margin-top: 30px;">
+            <strong>💡 Tip:</strong> El sistema funciona perfectamente sin Supabase (usando localStorage), 
+            pero con Supabase obtienes persistencia real entre dispositivos y fotos en la nube.
+        </div>
+    </div>
+</body>
+</html>
