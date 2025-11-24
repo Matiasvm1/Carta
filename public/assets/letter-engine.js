@@ -6,7 +6,7 @@
 class LetterEngine {
     constructor() {
         this.currentLetter = null;
-        this.dataPath = '../data/cartas.json';
+        this.dataPath = '/Carta/data/cartas.json';
         this.transitioning = false;
         this.hearts = ["❤️","💕","💗","💞","💖"];
         
@@ -381,7 +381,7 @@ class LetterEngine {
     // API pública para el panel de administración
     static async getAllLetters() {
         try {
-            const response = await fetch('../data/cartas.json');
+            const response = await fetch('/Carta/data/cartas.json');
             const data = await response.json();
             return data;
         } catch (error) {
