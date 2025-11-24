@@ -1,0 +1,37 @@
+{
+  "name": "cartas-romanticas-dinamicas",
+  "version": "1.0.0",
+  "description": "Sistema web modular para crear y gestionar cartas románticas con efectos visuales cinematográficos",
+  "main": "public/index.html",
+  "scripts": {
+    "start": "http-server public/ -p 8000 -o",
+    "dev": "live-server public/",
+    "admin": "live-server admin/",
+    "build": "echo 'Proyecto listo para deploy estático'",
+    "deploy": "echo 'Sube los archivos a tu hosting preferido'"
+  },
+  "keywords": [
+    "romantic-letters",
+    "love-letters",
+    "dynamic-content",
+    "romantic-web",
+    "glassmorphism",
+    "parallax",
+    "animations",
+    "3d-effects"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/cartas-romanticas.git"
+  },
+  "homepage": "https://tu-usuario.github.io/cartas-romanticas/public/",
+  "bugs": {
+    "url": "https://github.com/tu-usuario/cartas-romanticas/issues"
+  }
+}
