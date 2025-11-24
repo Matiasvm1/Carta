@@ -1,0 +1,38 @@
+# Configuración de GitHub Pages
+title: "Cartas Románticas para Jimena"
+description: "Sistema dinámico de cartas románticas con efectos 3D"
+
+# Usar el index.html de la raíz como página principal
+include:
+  - index.html
+  - public/
+  - admin/
+  - data/
+
+# Excluir archivos que no queremos mostrar en el sitio
+exclude:
+  - DOCUMENTACION.md
+  - DEPLOYMENT.md
+  - carta.prompt.md
+  - package.json
+  - .gitignore
+  - ejemplo/
+  - "carta .html"
+
+# Plugin para mejorar la navegación
+plugins:
+  - jekyll-relative-links
+
+# Configuración para que Jekyll no procese ciertos archivos
+relative_links:
+  enabled:     true
+  collections: false
+
+# Configuración para mejorar el SEO
+lang: es
+google_analytics: # Aquí puedes agregar tu ID de Google Analytics si quieres
+
+# Metadatos del sitio
+author: "Matias"
+social:
+  name: "Cartas Románticas"

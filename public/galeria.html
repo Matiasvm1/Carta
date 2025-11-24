@@ -418,7 +418,7 @@ let currentFilter = 'all';
 // Cargar cartas desde el JSON
 async function loadLetters() {
   try {
-    const response = await fetch('/Carta/data/cartas.json');
+    const response = await fetch('../data/cartas.json');
     const data = await response.json();
     
     // Filtrar solo cartas activas y ordenar por fecha (más recientes primero)
@@ -549,7 +549,7 @@ function stripHtml(html) {
 
 // Abrir carta individual
 function openLetter(letterId) {
-  window.open(`/Carta/public/index.html?carta=${letterId}`, '_blank');
+  window.open(`index.html?carta=${letterId}`, '_blank');
 }
 
 // Ir al panel de administración
@@ -558,7 +558,7 @@ function goToAdmin() {
   if (password) {
     // Guardar contraseña temporalmente para auto-login
     sessionStorage.setItem('adminPassword', password);
-    window.open('/Carta/admin/index.html', '_blank');
+    window.open('../admin/index.html', '_blank');
   }
 }
 

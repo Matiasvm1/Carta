@@ -456,7 +456,7 @@
 
         async function init() {
             try {
-                const response = await fetch('/Carta/data/cartas.json');
+                const response = await fetch('../data/cartas.json');
                 if (response.ok) {
                     currentData = await response.json();
                 } else {
@@ -531,7 +531,7 @@
         }
 
         function previewLetter(letterId) {
-            const url = `/Carta/public/index.html?carta=${letterId}`;
+            const url = `../public/index.html?carta=${letterId}`;
             window.open(url, '_blank');
         }
 
@@ -730,7 +730,7 @@
 
         // Abrir galería
         function openGallery() {
-            window.open('/Carta/public/galeria.html', '_blank');
+            window.open('../public/galeria.html', '_blank');
         }
 
         // Auto-login desde galería

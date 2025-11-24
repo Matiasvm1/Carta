@@ -6,7 +6,7 @@
 class LetterEngine {
     constructor() {
         this.currentLetter = null;
-        this.dataPath = '/Carta/data/cartas.json';
+        this.dataPath = '../data/cartas.json';
         this.transitioning = false;
         this.hearts = ["❤️","💕","💗","💞","💖"];
         
@@ -134,7 +134,7 @@ class LetterEngine {
         const galleryBtn = document.getElementById('galleryBtn');
         if (galleryBtn) {
             galleryBtn.addEventListener('click', () => {
-                window.open('/Carta/public/galeria.html', '_blank');
+                window.open('galeria.html', '_blank');
             });
         }
 
@@ -389,7 +389,7 @@ class LetterEngine {
     // API pública para el panel de administración
     static async getAllLetters() {
         try {
-            const response = await fetch('/Carta/data/cartas.json');
+            const response = await fetch('../data/cartas.json');
             const data = await response.json();
             return data;
         } catch (error) {
